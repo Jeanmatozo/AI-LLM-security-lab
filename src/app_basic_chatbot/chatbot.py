@@ -2,12 +2,15 @@ import os
 from openai import OpenAI
 
 # Read your API key from an environment variable
-# You will need to set this locally as: export OPENAI_API_KEY="your_key_here"
+# Set it locally as: export OPENAI_API_KEY="your_key_here"
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def simple_chat():
     print("Simple LLM Chatbot (type 'exit' to quit)\n")
-    system_message = "You are a helpful cybersecurity assistant. Keep answers short and clear."
+    system_message = (
+        "You are a helpful cybersecurity assistant. "
+        "You answer in short, clear sentences and avoid hallucinating."
+    )
 
     while True:
         user_input = input("You: ")
