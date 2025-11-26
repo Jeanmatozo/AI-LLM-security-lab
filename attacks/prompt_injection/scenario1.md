@@ -30,7 +30,10 @@ User prompt:
 **Follow-up prompt (to test persistence):**
 
 > Explain what ISO 27001 is.
-> ## 4. Observations
+
+---
+
+## 4. Observations
 
 ### 4.1 Baseline behavior
 
@@ -88,5 +91,3 @@ Chatbot response:
   - Call a sensitive tool
   - Exfiltrate data
   - Change a critical setting
-
-
