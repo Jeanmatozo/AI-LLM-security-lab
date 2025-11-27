@@ -7,13 +7,17 @@ from openai import OpenAI  # make sure this matches your existing code
 from .loader import load_and_chunk_all
 from .vectorstore import SimpleVectorStore
 
-client = OpenAI()  # requires OPENAI_API_KEY in your environment
+# Requires OPENAI_API_KEY in your environment for the client to work
+client = OpenAI()
 
 EMBED_MODEL = "text-embedding-3-small"  # adjust if you use a different embedding model
 CHAT_MODEL = "gpt-4o-mini"              # adjust to whatever you use in chatbot.py
 
 
 def get_embedding(text: str) -> List[float]:
+    """
+    Get an embedding vector for a given piece of text.
+    """
     resp = client.embeddings.create(
         model=EMBED_MODEL,
         input=text,
@@ -22,6 +26,9 @@ def get_embedding(text: str) -> List[float]:
 
 
 def build_index() -> SimpleVectorStore:
+    """
+    Load and chunk all local docs, embed them, and store them in a SimpleVectorStore.
+    """
     print("Loading and chunking documents...")
     chunks = load_and_chunk_all()
     store = SimpleVectorStore()
@@ -42,12 +49,23 @@ def build_index() -> SimpleVectorStore:
     return store
 
 
-def answer_question(store: SimpleVectorStore, question: str) -> str:
-    q_emb = get_embedding(question)
-    top = store.top_k(q_emb, k=3)
+def rag_query(store: SimpleVectorStore, query: str) -> str:
+    """
+    Core RAG logic:
+    - embed the user's query
+    - retrieve relevant chunks from the vector store
+    - build a context-aware prompt
+    - ask the LLM and return the answer
+    """
+    # 1) Embed the query
+    query_embedding = get_embedding(query)
 
+    # 2) Retrieve top-k relevant chunks
+    top_hits = store.top_k(query_embedding, k=3)
+
+    # 3) Build context string from the retrieved chunks
     context_parts = []
-    for score, item in top:
+    for score, item in top_hits:
         meta = item["metadata"]
         context_parts.append(
             f"[{meta['doc_name']} chunk {meta['chunk_index']}] {meta['text']}"
@@ -55,16 +73,18 @@ def answer_question(store: SimpleVectorStore, question: str) -> str:
 
     context = "\n\n".join(context_parts)
 
+    # 4) Construct the final prompt for the LLM
     user_prompt = f"""Use the context below to answer the user's question.
 If the answer is not in the context, say you are not sure and do not make things up.
 
 Context:
 {context}
 
-Question: {question}
+Question: {query}
 Answer:"""
 
-    resp = client.chat.completions.create(
+    # 5) Call the LLM API
+    response = client.chat.completions.create(
         model=CHAT_MODEL,
         messages=[
             {
@@ -74,10 +94,15 @@ Answer:"""
             {"role": "user", "content": user_prompt},
         ],
     )
-    return resp.choices[0].message.content
+
+    # 6) Return the LLM's answer text
+    return response.choices[0].message.content
 
 
 def main():
+    """
+    Build the index once, then enter a CLI loop to answer questions via rag_query.
+    """
     store = build_index()
     print("\nRAG app over local docs is ready.")
 
@@ -88,10 +113,9 @@ def main():
         if not q:
             continue
 
-        answer = answer_question(store, q)
+        answer = rag_query(store, q)
         print("\nAnswer:\n", answer)
 
 
 if __name__ == "__main__":
     main()
-
