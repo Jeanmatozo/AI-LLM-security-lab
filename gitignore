@@ -1,0 +1,28 @@
+# ---------------------------
+# Python cache and artifacts
+# ---------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.env.local
+
+# IDE / Editor settings
+.vscode/
+.idea/
+
+# Logs (Week 5 logging output)
+logs/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Python build outputs
+build/
+dist/
+*.egg-info/
