@@ -1,4 +1,11 @@
 # src/app_rag_docs/rag_app.py
+import datetime
+from pathlib import Path
+
+LOG_DIR = Path(__file__).resolve().parents[2] / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+LOG_FILE = LOG_DIR / "week5_rag_log.txt"
+
 
 from typing import List
 
@@ -47,6 +54,18 @@ def build_index() -> SimpleVectorStore:
 
     print("Index built.")
     return store
+    
+def log_result(query: str, context: str, answer: str) -> None:
+    timestamp = datetime.datetime.now().isoformat()
+    with LOG_FILE.open("a", encoding="utf-8") as f:
+        f.write("---\n")
+        f.write(f"Time: {timestamp}\n")
+        f.write(f"Query: {query}\n\n")
+        f.write("Context Used:\n")
+        f.write(context)
+        f.write("\n\nAnswer:\n")
+        f.write(answer)
+        f.write("\n\n")
 
 
 def rag_query(store: SimpleVectorStore, query: str) -> str:
@@ -83,7 +102,7 @@ Context:
 Question: {query}
 Answer:"""
 
-    # 5) Call the LLM API
+        # 5) Call the LLM API
     response = client.chat.completions.create(
         model=CHAT_MODEL,
         messages=[
@@ -95,8 +114,15 @@ Answer:"""
         ],
     )
 
-    # 6) Return the LLM's answer text
-    return response.choices[0].message.content
+    # 6) Extract answer text
+    answer_text = response.choices[0].message.content
+
+    # 7) Log the result (query, context, answer)
+    log_result(query, context, answer_text)
+
+    # 8) Return the LLM's answer text
+    return answer_text
+
 
 
 def main():
