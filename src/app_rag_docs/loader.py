@@ -13,7 +13,13 @@ def load_documents():
     Returns a list of {"path": Path, "text": str}.
     """
     docs = []
-    for file in DATA_DIR.glob("*.md"):
+    md_files = list(DATA_DIR.glob("*.md"))
+
+    # DEBUG: print which files are being loaded
+    print("Loading from:", DATA_DIR)
+    print("Found markdown files:", [f.name for f in md_files])
+
+    for file in md_files:
         text = file.read_text(encoding="utf-8")
         docs.append({"path": file, "text": text})
     return docs
