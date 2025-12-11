@@ -8,7 +8,7 @@ My personal lab to explore cybersecurity for AI systems — with a focus on:
 
 ## Who I am
 
-I am an ISO/IEC 27001:2022 Lead Auditor and cybersecurity learner transitioning into
+I am an ISO/IEC 27001:2022 IT Auditor and cybersecurity learner transitioning into
 a role as a **Cybersecurity engineer / penetration tester focused on AI & LLM security**.
 
 ## Lab Roadmap (First 10 Weeks)
