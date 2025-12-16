@@ -115,11 +115,20 @@ What I Am Practicing Here
 
 ---
 
-All you need to do:
+## Indirect Prompt Injection (RAG System Attack)
 
-1. Open `README.md` on GitHub (or locally).  
-2. Replace everything with the block above.  
-3. Save / commit.
+In Week 6, I demonstrated an indirect prompt injection attack against a RAG system by embedding hidden instructions inside a retrieved document.
 
-That automatically puts **Observed behavior** and **What this demonstrates** in the right place, with wording that matches what actually happened in your RAG app.
-As the lab grows, this repository will serve as my living portfolio for AI & LLM Security Engineering.
+**Observed behavior:**
+- The RAG system retrieves a malicious internal document
+- The model follows hidden instructions instead of system policy
+- Logging captures the query, retrieved context, and compromised output
+
+**What this demonstrates:**
+- RAG documents must be treated as untrusted input
+- Indirect prompt injection can occur without malicious user queries
+- Enterprise AI systems can be compromised via poisoned notes, PDFs, or emails
+
+Full analysis:  
+`reports/week6_indirect_injection_report.md`
+
