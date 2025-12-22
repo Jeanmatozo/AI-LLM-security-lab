@@ -1,109 +1,222 @@
 # AI & LLM Security Lab
 
-My personal lab exploring cybersecurity risks in AI-powered applications, with a focus on:
+A personal, hands-on security lab exploring **real-world risks in AI-powered applications**, with a focus on how Large Language Models (LLMs) fail in practice — not just in theory.
+
+This repository is designed as a **security engineer’s lab**, emphasizing attack execution, observation, logging, and governance mapping.
+
+---
+
+## Focus Areas
+
+This lab explores realistic attack paths against AI-powered systems, including:
 
 - Prompt injection and jailbreaks
-- RAG (Retrieval-Augmented Generation) security
+- Indirect prompt injection via RAG (Retrieval-Augmented Generation)
 - Agentic systems and tool abuse
-- Mapping AI risks to ISO/IEC 27001-style controls
+- **Silent data exfiltration via model, UI, and tool-driven channels**
+- Threat modeling for AI systems
+- Mapping AI risks to **OWASP LLM Top 10**
+- Mapping AI risks to **ISO/IEC 27001:2022-style controls**
+
+---
 
 ## Who I Am
 
-ISO/IEC 27001:2022 Lead Auditor and cybersecurity learner transitioning into AI & LLM security engineering.
+ISO/IEC 27001:2022 Lead Auditor and cybersecurity practitioner transitioning into **AI & LLM security engineering**, with a focus on:
+
+- LLM application security (LLM AppSec)
+- RAG security and trust boundaries
+- Agent safety and tool governance
+- Practical red-team style experimentation
+
+---
 
 ## Lab Roadmap (First 10 Weeks)
 
-1. Create this repo and basic structure (src/, attacks/, reports/, notes/)
+1. Create repository and baseline structure (`src/`, `attacks/`, `reports/`, `notes/`)
 2. Build a simple LLM chatbot
-3. Run and document prompt injection experiments
-4. Build a small RAG app over local documents
-5. Test indirect prompt injection from malicious documents
-6. Build a basic agent with tool access (files / dummy API)
-7. Simulate tool abuse and data exfiltration scenarios
+3. Run and document direct prompt injection experiments
+4. Build a small RAG application over local documents
+5. Test indirect prompt injection via malicious documents
+6. Document threat models and attack paths
+7. **Simulate tool abuse and silent data exfiltration scenarios**
 8. Implement mitigations and guardrails
-9. Document threat models and risks
+9. Evaluate logging, detection, and governance gaps
 10. Map AI risks to ISO/IEC 27001-style controls
 
-# AI-LLM-security-lab
-
 ---
 
-## Attack Scenarios in This Lab
+# Attack Scenarios in This Lab
 
-### Scenario 1 — Direct Prompt Injection (Basic Chatbot)
+## Scenario 1 — Direct Prompt Injection (Basic Chatbot)
 
-- Path: `attacks/prompt_injection/scenario1.md`
-- App: `src/app_basic_chatbot/chatbot.py`
+- **Path:** `attacks/prompt_injection/scenario1.md`
+- **App:** `src/app_basic_chatbot/chatbot.py`
 
-**What this demonstrates**
+### What this demonstrates
 - How single-turn prompt injection works
 - Why stateless chatbots are still vulnerable
-- Why system prompts alone are insufficient
+- Why system prompts alone are insufficient as a security control
 
 ---
 
-### Scenario 2 — Indirect Prompt Injection (RAG System Attack)
+## Scenario 2 — Indirect Prompt Injection (RAG System Attack)
 
-- Path: `attacks/Indirect Prompt Injection/Scenario 2 (RAG System Attack).md`
-- App: `src/app_rag_docs/rag_app.py`
-- Malicious doc: `data/rag_docs/malicious_vendor_note.md`
+- **Path:** `attacks/indirect_prompt_injection/scenario2_rag_attack.md`
+- **App:** `src/app_rag_docs/rag_app.py`
+- **Malicious document:** `data/rag_docs/malicious_vendor_note.md`
 
-**Observed behavior**
-- RAG retrieves a malicious internal document
-- Model follows hidden instructions instead of system policy
-- Logs capture query, retrieved chunks, and compromised output
+### Observed behavior
+- The RAG system retrieves a malicious internal document
+- The model follows hidden instructions embedded in retrieved content
+- System policy is overridden indirectly
+- Logs capture the query, retrieved chunks, and compromised output
 
-**What this demonstrates**
-- Indirect prompt injection via stored documents
-- RAG documents must be treated as untrusted input
+### What this demonstrates
+- RAG documents must be treated as **untrusted input**
+- Indirect prompt injection can occur without malicious user queries
 - Enterprise AI systems can be compromised via poisoned PDFs, notes, or emails
 
-Full analysis:
-- `reports/week6_indirect_injection_report.md`
+**Full analysis:**  
+`reports/week6_indirect_injection_report.md`
+
+---
+
+## Scenario 3 — Tool Abuse & Silent Data Exfiltration (Week 7)
+
+### Overview
+
+In Week 7, this lab explores **silent data exfiltration** — scenarios where sensitive data is leaked without traditional downloads, malware, or obvious user actions.
+
+These attacks leverage:
+- Over-privileged tools
+- Agent autonomy
+- Trust in model outputs
+- Insufficient output and tool governance
+
+---
+
+### Threat Model
+
+- Attacker controls a prompt fragment, document, or tool input
+- AI system has access to tools (files, APIs, or fetch functions)
+- The model is induced to misuse tools or structure outputs in a way that leaks data
+- Exfiltration occurs **without explicit user intent**
+
+---
+
+### Attack Focus
+
+- Model-initiated tool misuse
+- Prompt-based data smuggling
+- Unauthorized disclosure through structured outputs
+- Gaps in logging and authorization for AI-driven actions
+
+---
+
+### What this demonstrates
+
+- AI systems can exfiltrate data **without network exploits**
+- Tool access significantly expands attack surface
+- Traditional AppSec assumptions do not hold for agentic systems
+- Detection is harder because actions appear “legitimate”
+
+---
+
+### OWASP LLM Top 10 Mapping (Primary)
+
+- **LLM01 — Prompt Injection**
+- **LLM02 — Insecure Output Handling**
+- **LLM06 — Sensitive Information Disclosure**
+- **LLM07 — Insecure Plugin / Tool Design**
+
+---
+
+## Silent Data Exfiltration in AI Systems
+
+In this lab, *silent data exfiltration* refers to scenarios where sensitive data is leaked through:
+
+- Model-generated outputs
+- Structured responses (JSON, tables, summaries)
+- Agent-initiated tool actions
+- Trusted rendering or execution paths
+
+These attacks often bypass:
+- Traditional DLP controls
+- User awareness
+- UI-based security checks
+
+They represent one of the **highest-risk and least-understood classes of AI security failures**.
 
 ---
 
 ## Code Structure
-	•	src/app_basic_chatbot/
-Minimal LLM chatbot app used for direct prompt injection experiments.
-	•	src/app_rag_docs/
-Simple RAG app over local markdown docs using embeddings + an in-memory vector store.
-	•	data/rag_docs/
-Local markdown documents used for RAG, including:
-	•	ai_security_notes.md
-	•	iso27001_overview.md
-	•	malicious_vendor_note.md (used for indirect injection testing)
-	•	attacks/
-Writeups for prompt injection and RAG-based attack scenarios.
-	•	reports/
-Security-style reports, baseline evaluations, and threat/impact notes.
-	•	notes/
-Learning notes and future experiment ideas.
+src/
+app_basic_chatbot/
+chatbot.py
 
-⸻
+src/
+app_rag_docs/
+rag_app.py
 
-## What I Am Practicing Here
-	•	Writing and running Python-based security experiments for LLMs
-	•	Designing and executing AI attack scenarios (prompt injection, RAG abuse)
-	•	Logging and analyzing model behavior like a security engineer
-	•	Connecting AI security findings back to governance frameworks (ISO/IEC 27001)
+data/
+rag_docs/
+ai_security_notes.md
+iso27001_overview.md
+malicious_vendor_note.md
+
+attacks/
+prompt_injection/
+scenario1.md
+
+attacks/
+indirect_prompt_injection/
+scenario2_rag_attack.md
+
+reports/
+week6_indirect_injection_report.md
+week7_tool_abuse_exfiltration_report.md
+
+notes/
+learning_notes.md
+
 
 ---
 
-## Indirect Prompt Injection (RAG System Attack)
+## What I Am Practicing Here
 
-In Week 6, I demonstrated an indirect prompt injection attack against a RAG system by embedding hidden instructions inside a retrieved document.
+- Writing and running Python-based LLM security experiments
+- Designing AI attack scenarios (prompt injection, RAG abuse, tool misuse)
+- Observing and logging model behavior like a security engineer
+- Threat modeling AI systems across model, application, and tool layers
+- Mapping technical findings to governance frameworks (ISO/IEC 27001)
 
-**Observed behavior:**
-- The RAG system retrieves a malicious internal document
-- The model follows hidden instructions instead of system policy
-- Logging captures the query, retrieved context, and compromised output
+---
 
-**What this demonstrates:**
-- RAG documents must be treated as untrusted input
-- Indirect prompt injection can occur without malicious user queries
-- Enterprise AI systems can be compromised via poisoned notes, PDFs, or emails
+## Governance & Control Mapping
 
-Full analysis:  
-`reports/week6_indirect_injection_report.md`
+Each scenario is evaluated against:
+
+- **OWASP LLM Top 10**
+- **ISO/IEC 27001:2022**
+  - Information access control
+  - Secure system design
+  - Logging and monitoring
+  - Third-party and tool governance
+  - Risk assessment and treatment
+
+The goal is not only to break AI systems — but to understand **how to secure them in regulated, enterprise environments**.
+
+---
+
+## Disclaimer
+
+This repository is for **educational and defensive security research only**.  
+All attacks are demonstrated in controlled environments using non-sensitive data.
+
+---
+
+## Status
+
+🚧 Actively evolving — new scenarios, mitigations, and reports added weekly.
 
