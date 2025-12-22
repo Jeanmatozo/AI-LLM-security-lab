@@ -67,3 +67,8 @@ def list_allowed_files() -> str:
     _log("tool_list_allowed_files", {"allowed": files})
     return "\n".join(files) if files else "(no files allowlisted)"
 
+    """
+    files = sorted(ALLOWED_FILES)
+    _log("tool_list_allowed_files", {"allowed": files})
+    return "\n".join(files) if files else "(no files allowlisted)"
+
