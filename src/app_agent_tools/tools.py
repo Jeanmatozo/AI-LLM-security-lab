@@ -3,66 +3,57 @@ from __future__ import annotations
 
 import datetime
 from pathlib import Path
+from typing import Any, Dict
 
-
-# Repo root = <repo>/src/app_agent_tools/tools.py -> parents[2]
+# Repo root = parents[2] because: src/app_agent_tools/tools.py
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SANDBOX_DIR = REPO_ROOT / "data" / "agent_files"
-SANDBOX_DIR.mkdir(parents=True, exist_ok=True)
-
 LOG_DIR = REPO_ROOT / "logs"
-LOG_DIR.mkdir(exist_ok=True)
 LOG_FILE = LOG_DIR / "week7_agent_log.txt"
 
+LOG_DIR.mkdir(exist_ok=True)
+SANDBOX_DIR.mkdir(parents=True, exist_ok=True)
 
-def _log(line: str) -> None:
+# Only allow reading THESE exact filenames (least privilege)
+ALLOWED_FILES = {
+    "public_info.txt",
+    # Intentionally NOT allowing confidential.txt
+}
+
+def _log(event: str, payload: Dict[str, Any]) -> None:
     ts = datetime.datetime.now().isoformat()
     with LOG_FILE.open("a", encoding="utf-8") as f:
-        f.write(f"[{ts}] {line}\n")
+        f.write("---\n")
+        f.write(f"Time: {ts}\n")
+        f.write(f"Event: {event}\n")
+        for k, v in payload.items():
+            f.write(f"{k}: {v}\n")
 
+def read_sandbox_file(filename: str) -> str:
+    """
+    Safe tool: read only allowlisted files from data/agent_files/.
+    """
+    filename = filename.strip()
 
-def _safe_resolve_path(user_path: str) -> Path:
-    """
-    Only allow access inside data/agent_files/.
-    This prevents path traversal like: ..\\..\\secrets.txt
-    """
-    p = (SANDBOX_DIR / user_path).resolve()
-    if SANDBOX_DIR.resolve() not in p.parents and p != SANDBOX_DIR.resolve():
-        raise ValueError("Access denied: path is outside the sandbox directory.")
-    return p
-
-
-def read_file(path: str) -> str:
-    """
-    Tool: Read a file from the sandbox (data/agent_files/).
-    """
-    _log(f"TOOL_CALL read_file path={path!r}")
-    p = _safe_resolve_path(path)
-    if not p.exists():
-        msg = f"File not found: {p.name}"
-        _log(f"TOOL_RESULT read_file error={msg!r}")
+    if filename not in ALLOWED_FILES:
+        msg = f"DENIED: filename '{filename}' is not allowlisted."
+        _log("tool_read_sandbox_file_denied", {"filename": filename})
         return msg
 
-    text = p.read_text(encoding="utf-8", errors="replace")
-    _log(f"TOOL_RESULT read_file bytes={len(text)}")
+    path = SANDBOX_DIR / filename
+    if not path.exists():
+        msg = f"ERROR: file '{filename}' not found in sandbox."
+        _log("tool_read_sandbox_file_missing", {"filename": filename})
+        return msg
+
+    text = path.read_text(encoding="utf-8", errors="replace")
+    _log("tool_read_sandbox_file_ok", {"filename": filename, "bytes": len(text)})
     return text
 
-
-def write_report(filename: str, content: str) -> str:
+def list_allowed_files() -> str:
     """
-    Tool: Write a report file inside the sandbox.
-    This simulates an agent producing an artifact (incident report, summary, ticket draft, etc.).
+    Safe tool: show the allowlist to the agent (prevents guessing).
     """
-    _log(f"TOOL_CALL write_report filename={filename!r} content_len={len(content)}")
-
-    # Force .txt or .md only (simple restriction)
-    if not (filename.endswith(".txt") or filename.endswith(".md")):
-        msg = "Only .txt or .md reports are allowed."
-        _log(f"TOOL_RESULT write_report error={msg!r}")
-        return msg
-
-    p = _safe_resolve_path(filename)
-    p.write_text(content, encoding="utf-8")
-    _log(f"TOOL_RESULT write_report wrote={p.name!r}")
-    return f"Wrote report: {p.name}"
-
+    files = sorted(ALLOWED_FILES)
+    _log("tool_list_allowed_files", {"allowed": files})
+    return "\n".join(files) if files else "(no files allowlisted)"
