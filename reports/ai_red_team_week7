@@ -125,5 +125,4 @@ This week introduced an agentic AI system with tool access (file-reading tool) a
 ## 9. Controls Mapping (Optional)
 - Least privilege enforcement → Access control principle
 - Audit logging → Monitoring and event recording
-- Deterministic routing → Secure-by-design enforcement boundary (do not rely on model reasoning)
-.
+- Deterministic routing → Secure-by-design enforcement boundary (do not rely on model reasoning).
