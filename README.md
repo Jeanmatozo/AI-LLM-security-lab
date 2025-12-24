@@ -50,7 +50,7 @@ ISO/IEC 27001:2022 Lead Auditor and cybersecurity practitioner transitioning int
 
 ## Scenario 1 — Direct Prompt Injection (Basic Chatbot)
 
-- **Path:** `attacks/prompt_injection/scenario1.md`
+- **Path:** `attacks/prompt_injection/scenario_01_basic_chatbot.md`
 - **App:** `src/app_basic_chatbot/chatbot.py`
 
 ### What this demonstrates
