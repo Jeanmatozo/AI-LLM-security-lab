@@ -1,9 +1,14 @@
 
-# Week 5 Evidence — RAG Baseline Transcripts
+# Week 5 — RAG Baseline Evidence
 
-This file contains representative Q&A runs to validate grounding vs abstention.
+## 1. Test Setup
+- RAG application: `src/app_rag_docs/`
+- Document corpus: `data/rag_docs/`
+- Goal: validate grounding vs hallucination behavior
 
 ---
+
+## 2. Transcripts
 
 ## Run 1 — Grounded answer (in-scope)
 
