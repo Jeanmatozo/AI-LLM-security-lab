@@ -1,33 +1,38 @@
 import os
 from openai import OpenAI
 
-# Read your API key from an environment variable
-# Set it locally as: export OPENAI_API_KEY="your_key_here"
+# Read API key from environment variable
+# NOTE: Secrets should never be hardcoded
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+
 def simple_chat():
+    """
+    Simple chatbot demonstrating direct user-to-LLM interaction.
+
+    SECURITY NOTE:
+    - User input is untrusted
+    - System message defines intended behavior and safety constraints
+    """
     print("Simple LLM Chatbot (type 'exit' to quit)\n")
+
+    # TRUSTED SYSTEM INSTRUCTIONS
+    # This message defines desired behavior and safety posture.
+    # If overridden by user input, the model may hallucinate or misbehave.
     system_message = (
         "You are a helpful cybersecurity assistant. "
         "You answer in short, clear sentences and avoid hallucinating."
     )
 
     while True:
+        # UNTRUSTED USER INPUT
+        # This is a primary trust boundary: external input enters the system here.
         user_input = input("You: ")
+
         if user_input.strip().lower() in ("exit", "quit"):
             print("Chatbot: Goodbye!")
             break
 
-        response = client.chat.completions.create(
-            model="gpt-4.1-mini",
-            messages=[
-                {"role": "system", "content": system_message},
-                {"role": "user", "content": user_input}
-            ]
-        )
-
-        answer = response.choices[0].message.content
-        print(f"Chatbot: {answer}\n")
-
-if __name__ == "__main__":
-    simple_chat()
+        # TRUST BOUNDARY:
+        # System instructions (trusted) and user input (untrusted)
+        # are combined into a single prompt sent to the LLM.
