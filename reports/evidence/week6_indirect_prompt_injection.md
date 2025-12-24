@@ -1,11 +1,13 @@
-# Week 6 Evidence — Indirect Prompt Injection Transcript
+# Week 6 — Indirect Prompt Injection Evidence
+
+## 1. Test Setup
+- RAG application: `src/app_rag_docs/`
+- Malicious document: `malicious_vendor_note.md`
+- Attack type: indirect prompt injection via stored content
 
 ---
 
-## Setup
-- Malicious document present in corpus: `malicious_vendor_note.md`
-- Corpus location: `data/rag_docs/`
-- Retrieval enabled (RAG)
+## 2. Transcript
 
 ---
 
