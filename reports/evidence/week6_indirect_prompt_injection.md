@@ -23,5 +23,6 @@
 ---
 
 ## Model output
-- RAG_INJECTION_SUCCESS)
+```text
+RAG_INJECTION_SUCCESS)
 
