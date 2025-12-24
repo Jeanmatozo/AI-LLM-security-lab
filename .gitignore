@@ -1,28 +1,16 @@
-# ---------------------------
-# Python cache and artifacts
-# ---------------------------
+# Python bytecode
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
 
 # Virtual environments
+.venv/
 venv/
-.env/
-.env.local
+env/
 
-# IDE / Editor settings
-.vscode/
-.idea/
-
-# Logs (Week 5 logging output)
-logs/
-
-# OS-specific files
+# OS files
 .DS_Store
 Thumbs.db
 
-# Python build outputs
-build/
-dist/
-*.egg-info/
+# Logs (keep if you want them versioned)
+# logs/
