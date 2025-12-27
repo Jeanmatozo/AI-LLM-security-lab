@@ -83,7 +83,11 @@ def run_agent(user_query: str) -> str:
     - Least-privilege by design
     """
 
+    print(f"[DEBUG] user_input={user_query!r}")
+
     route = route_intent(user_query)
+
+    print(f"[DEBUG] routed_intent={route!r}")
 
     if route == "deny":
         return "I cannot perform that action."
@@ -95,6 +99,7 @@ def run_agent(user_query: str) -> str:
     # Execute allowlisted tool
     tool_fn = TOOLS[route]
     return tool_fn()
+
 
 
 # -----------------------------
