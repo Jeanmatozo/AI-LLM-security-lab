@@ -26,7 +26,7 @@ def log_agent_event(event: str, payload: Dict[str, Any]) -> None:
 
 
 # Deterministic routing patterns
-_READ_RE = re.compile(r"(?i)\read\s+([^\n\r]+?)\s*$")
+_READ_RE = re.compile(r"(?i)\bread\s+([^\n\r]+?)\s*$")
 _LIST_RE = re.compile(r"(?i)^\s*what files can you read\s*$")
 
 def route_user_command(user_text: str) -> Optional[str]:
