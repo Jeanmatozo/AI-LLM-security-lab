@@ -5,7 +5,20 @@ A personal, hands-on security lab exploring **real-world risks in AI-powered app
 This repository is designed as a **security engineer’s lab**, emphasizing attack execution, observation, logging, and governance mapping.
 
 ---
+## Setup & Dependencies
 
+This lab is designed to be reproducible.
+
+### Requirements
+- Python 3.10+
+- OpenAI API key
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+
+```
 ## Focus Areas
 
 This lab explores realistic attack paths against AI-powered systems, including:
@@ -211,8 +224,14 @@ The goal is not only to break AI systems — but to understand **how to secure t
 
 ## Disclaimer
 
-This repository is for **educational and defensive security research only**.  
-All attacks are demonstrated in controlled environments using non-sensitive data.
+This repository is for educational and defensive security research only.
+
+All attack scenarios are demonstrated in controlled environments using
+synthetic, non-sensitive data. No real credentials, personal data, or
+proprietary information are used.
+
+The techniques documented here are intended to improve the security of
+AI-powered systems, not to enable misuse.
 
 ---
 
