@@ -1,3 +1,5 @@
+# src/app_basic_chatbot/chatbot.py
+
 import os
 from openai import OpenAI
 
@@ -18,21 +20,5 @@ def simple_chat():
 
     # TRUSTED SYSTEM INSTRUCTIONS
     # This message defines desired behavior and safety posture.
-    # If overridden by user input, the model may hallucinate or misbehave.
-    system_message = (
-        "You are a helpful cybersecurity assistant. "
-        "You answer in short, clear sentences and avoid hallucinating."
-    )
+    # If overridden by user in
 
-    while True:
-        # UNTRUSTED USER INPUT
-        # This is a primary trust boundary: external input enters the system here.
-        user_input = input("You: ")
-
-        if user_input.strip().lower() in ("exit", "quit"):
-            print("Chatbot: Goodbye!")
-            break
-
-        # TRUST BOUNDARY:
-        # System instructions (trusted) and user input (untrusted)
-        # are combined into a single prompt sent to the LLM.
