@@ -1,3 +1,9 @@
+### Assets
+- Confidential sandbox files (`confidential.txt`, `internal_notes.txt`)
+- Authorized public file (`public_info.txt`)
+- File-reading tool execution privileges
+- Audit logs
+
 ### Finding 1 — Confused-Deputy Risk via Indirect Requests
 
 Severity: Informational
