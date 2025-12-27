@@ -1,0 +1,4 @@
+openai>=1.0.0
+
+# Optional but recommended for local development
+python-dotenv>=1.0.0
