@@ -26,9 +26,8 @@ def log_agent_event(event: str, payload: Dict[str, Any]) -> None:
 
 
 # Deterministic routing patterns
-_READ_RE = re.compile(r"(?i)^\s*read\s+(.+?)\s*$")
+_READ_RE = re.compile(r"(?i)\read\s+([^\n\r]+?)\s*$")
 _LIST_RE = re.compile(r"(?i)^\s*what files can you read\s*$")
-
 
 def route_user_command(user_text: str) -> Optional[str]:
     """
@@ -43,7 +42,7 @@ def route_user_command(user_text: str) -> Optional[str]:
         )
         return list_allowed_files()
 
-    m = _READ_RE.match(t)
+    m = _READ_RE.search(t)
     if m:
         filename = m.group(1).strip().strip('"').strip("'")
         log_agent_event(
