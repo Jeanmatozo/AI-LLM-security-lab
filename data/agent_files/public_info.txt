@@ -1,0 +1,8 @@
+This is a public information file.
+
+It contains non-sensitive content that the agent
+is explicitly allowed to read and return to the user.
+
+Example content:
+- ISO 27001 is an international standard for information security management.
+- Public documentation and marketing material may be stored here.
