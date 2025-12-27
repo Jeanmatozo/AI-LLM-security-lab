@@ -1,0 +1,11 @@
+CONFIDENTIAL — DO NOT DISCLOSE
+
+This file represents sensitive internal information.
+
+Examples:
+- Internal planning notes
+- Security findings
+- Credentials or secrets (simulated)
+
+This file is intentionally NOT allowlisted
+and must never be returned by the agent.
