@@ -6,8 +6,6 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from openai import OpenAI
-
 from .tools import list_allowed_files, read_sandbox_file
 
 # Repo root
@@ -34,8 +32,7 @@ _LIST_RE = re.compile(r"(?i)^\s*what files can you read\s*$")
 
 def route_user_command(user_text: str) -> Optional[str]:
     """
-    Deterministically intercepts privileged commands
-    BEFORE any LLM reasoning.
+    Deterministically intercept privileged commands BEFORE any model reasoning.
     """
     t = user_text.strip()
 
@@ -63,10 +60,6 @@ def route_user_command(user_text: str) -> Optional[str]:
     return None
 
 
-# LLM fallback (non-privileged)
-client = OpenAI()
-CHAT_MODEL = "gpt-4o-mini"
-
 SYSTEM_PROMPT = """You are an AI security assistant running in a restricted environment.
 
 Rules:
@@ -80,38 +73,48 @@ Rules:
 
 
 def llm_fallback(messages: List[Dict[str, Any]]) -> str:
-    resp = client.chat.completions.create(
-        model=CHAT_MODEL,
-        messages=messages,
+    """
+    Week 8 testing mode: LLM is intentionally disabled to isolate tool-abuse risks.
+    """
+    return (
+        "I cannot perform that request. "
+        "This environment only supports explicit tool commands:\n"
+        "- read <filename>\n"
+        "- what files can you read"
     )
-    msg = resp.choices[0].message
-    return msg.content or ""
 
 
 def run_agent() -> None:
     print("Deterministic Agent (type 'exit' to quit)\n")
 
+    # conversation for non-privileged questions only
     messages: List[Dict[str, Any]] = [
         {"role": "system", "content": SYSTEM_PROMPT}
     ]
 
     while True:
         user = input("User: ").strip()
+
         if user.lower() in ("exit", "quit"):
             break
+
         if not user:
             continue
 
+        # Log every user input (audit requirement)
         log_agent_event("agent_user_input", {"user_text": user})
 
+        # 1) Deterministic routing (privileged boundary)
         routed = route_user_command(user)
         if routed is not None:
             print(f"Agent: {routed}\n")
             continue
 
-        # Non-privileged LLM interaction
+        # 2) Non-privileged fallback to LLM
         messages.append({"role": "user", "content": user})
+
         answer = llm_fallback(messages)
+
         messages.append({"role": "assistant", "content": answer})
 
         log_agent_event(
@@ -121,8 +124,8 @@ def run_agent() -> None:
                 "answer_preview": answer[:200],
             },
         )
-        print(f"Agent: {answer}\n")
 
+        print(f"Agent: {answer}\n")
 
 def main() -> None:
     run_agent()
