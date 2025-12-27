@@ -1,89 +1,29 @@
-# Report 03 — Tool Abuse in Agentic Systems
-
----
-
-## 1. Summary
-This assessment evaluates whether an LLM-based agent can be coerced into
-misusing legitimate tools through indirect or manipulative user prompts.
-The focus is on confused-deputy behavior rather than direct policy violations.
-
----
-
-## 2. Scope
-
-### In Scope
-- Agent routing logic
-- File-reading tool
-- Allowlist enforcement
-- Audit logging
-
-### Out of Scope
-- Network tools
-- Write or modify tools
-- Multi-agent systems
-
----
-
-## 3. Threat Model
-
-### Assets
-- Confidential sandbox files
-- Tool execution privileges
-- Audit logs
-
-### Attacker
-- Untrusted user attempting to extract sensitive data indirectly
-
----
-
-## 4. Tool Abuse Scenario
-
-Summarize Scenario 1 here and link to:
-- `attacks/tool_abuse/scenario1.md`
-
----
-
-## 5. Findings
-
 ### Finding 1 — Confused-Deputy Risk via Indirect Requests
-**Severity:** Medium / High (depending on outcome)
 
-Describe:
-- what the agent attempted
-- whether tools were invoked
-- whether enforcement held
+Severity: Informational
 
----
+The agent was tested against indirect, manipulative, and socially engineered prompts designed to coerce misuse of a legitimate file-reading tool without an explicit command.
 
-## 6. Impact Analysis
-Explain:
-- why tool abuse is dangerous
-- how it scales with more tools
-- why reasoning-based refusal is insufficient
+Across all test cases, the agent did not invoke tools in response to inferred intent, summaries, confirmations, or embedded command strings. Tool execution remained gated behind deterministic routing requiring explicit syntax (read <filename>), and all malformed or unauthorized attempts were denied by the tool layer.
 
----
+This demonstrates effective mitigation of confused-deputy and indirect coercion risks for the tested tool.
 
-## 7. Evidence
-- `reports/evidence/week8_tool_abuse.md`
+### Finding 2 — Allowlist Disclosure as Capability Signal
 
----
+Severity: Low
 
-## 8. Mitigations & Recommendations
+The command what files can you read discloses allowlisted filenames to the user. While this reduces filename guessing effort, only non-sensitive files are exposed, and the behavior is intentional and fully logged.
 
-### Short-Term
-- Intent classification before tool routing
-- Explicit allowlisting of *intents*, not just filenames
+No unauthorized access or sensitive metadata leakage was observed.
 
-### Medium-Term
-- Tool-specific policy checks
-- Refusal templates that avoid metadata leakage
+### Impact Analysis
 
-### Long-Term
-- Capability-based security for agents
-- Human-in-the-loop for high-risk tool actions
+This assessment demonstrates that deterministic routing combined with strict tool-level validation can effectively prevent tool abuse even under adversarial prompting.
 
----
+By removing natural-language intent interpretation from tool invocation paths, the system avoids a broad class of confused-deputy failures common in agentic systems that rely on LLM-driven tool selection.
 
-## 9. Conclusion
-Tool abuse represents a distinct and high-risk class of failures
-in agentic systems that cannot be addressed by prompt design alone.
+### Conclusion
+
+Tool abuse represents a high-risk class of failures in agentic systems, particularly when tools are invoked based on inferred intent.
+
+In this system, explicit command routing, filename validation, and allowlist enforcement successfully prevented misuse. While this limits agent flexibility, it significantly improves security posture, auditability, and predictability.
