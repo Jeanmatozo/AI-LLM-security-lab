@@ -90,4 +90,34 @@ If Section A fails:
   - groundedness (supported by retrieved context)
   - abstention rate on out-of-scope queries
   - failure categorization (hallucination vs retrieval failure vs prompt failure)
+ 
+  ---
+
+## Red Team Perspective
+
+From a red-team perspective, this baseline evaluation serves as a reconnaissance
+and measurement phase rather than an exploitation attempt.
+
+By intentionally testing both in-scope and out-of-scope questions, the attacker
+learns:
+- How the system behaves when context is missing
+- Whether the model hallucinates or abstains
+- How retrieval failures manifest in outputs
+
+This information reduces attacker uncertainty and informs follow-on attacks,
+such as indirect prompt injection or retrieval manipulation in later stages.
+
+---
+
+## Business Impact
+
+If grounding and abstention controls are weak, RAG systems may:
+- Fabricate authoritative-sounding but incorrect answers
+- Undermine user trust in AI-generated outputs
+- Introduce compliance and reputational risk when outputs are relied upon
+  for decision-making
+
+Establishing a reliable baseline for groundedness and abstention is therefore
+a prerequisite for safely deploying RAG systems in enterprise environments.
+
 
