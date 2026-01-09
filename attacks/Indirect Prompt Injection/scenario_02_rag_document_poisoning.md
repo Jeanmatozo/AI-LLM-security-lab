@@ -97,9 +97,36 @@ Enterprise RAG systems ingest PDFs, emails, vendor reports, and internal knowled
 - Apply **least privilege** design: even if an injection occurs, limit what the system can actually do.
 
 ---
+## 8. Business Impact
 
-## 8. Conclusion
+This behavior could lead to:
+- Unauthorized disclosure of sensitive internal data
+- Regulatory exposure due to insufficient access controls
+- Audit gaps where enforcement cannot be proven
+---
 
-This indirect prompt injection scenario demonstrates that **hidden malicious instructions in retrieved documents can override RAG system behavior**. Proper threat modeling, document sanitization, and untrusted input handling are essential to secure real-world RAG applications.
+## 9. Control Mapping (Preview)
+OWASP LLM Top 10:
+- LLM01 — Prompt Injection
+- LLM06 — Sensitive Information Disclosure
+
+ISO/IEC 27001:
+- A.5.15 — Access control
+- A.8.2 — Privileged access rights
+- A.8.15 — Logging and monitoring
+---
+
+## Red Team Analysis
+
+From an adversarial perspective, this failure mode is attractive because it:
+- Requires no exploit or malware
+- Appears as legitimate system usage
+- Bypasses traditional detection and DLP controls
+
+---
+## Conclusion
+
+This scenario demonstrates that **indirect prompt injection via retrieved documents can fully override RAG system behavior**. Without explicit trust boundary enforcement and document sanitization, RAG architectures remain vulnerable to content poisoning attacks that are difficult to detect and audit.
+
 
 
