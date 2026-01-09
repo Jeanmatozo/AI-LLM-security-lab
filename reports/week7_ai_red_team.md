@@ -154,3 +154,23 @@ After deterministic routing was introduced, identical inputs consistently produc
 - Least privilege enforcement → Access control principle
 - Audit logging → Monitoring and event recording
 - Deterministic routing → Secure-by-design enforcement boundary (do not rely on model reasoning)
+
+## Red Team Analysis
+
+From an adversarial perspective, this system initially exhibited a subtle but
+high-impact weakness: the ability to probe privileged operations without
+triggering enforcement or audit logs.
+
+By issuing file-read commands that the LLM refused in natural language, an
+attacker could:
+- Test access boundaries
+- Infer the existence of protected resources
+- Avoid leaving forensic evidence
+
+This represents a classic “silent failure” pattern, where the system appears
+secure from a user perspective but fails from an audit and detection standpoint.
+
+The introduction of deterministic routing closed this gap by ensuring that all
+privileged intents pass through enforced controls and logging, regardless of
+model behavior.
+
