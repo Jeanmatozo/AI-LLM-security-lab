@@ -91,3 +91,34 @@ Chatbot response:
   - Call a sensitive tool
   - Exfiltrate data
   - Change a critical setting
+
+ ---
+## 8. Business Impact
+
+In isolation, this failure is low risk. However, in real-world AI applications,
+single-turn prompt injection can still cause meaningful harm when:
+
+- A single response can trigger a tool invocation
+- Sensitive data is summarized or returned in one output
+- The model performs an action with external side effects
+
+This demonstrates why relying solely on statelessness or system prompts
+is insufficient once AI systems interact with tools, data, or workflows.
+
+  ---
+## 9. Control Mapping (Preview)
+
+- **OWASP LLM Top 10:** LLM01 – Prompt Injection
+- **ISO/IEC 27001:** A.5.15 (Access control), A.8.15 (Logging and monitoring)
+
+This early scenario establishes the need for defensive controls
+before introducing persistent state, retrieval, or tool access.
+
+  ---
+
+## Red Team Perspective
+
+This scenario reflects a realistic adversarial approach where the attacker uses
+legitimate user input to override intended system behavior, rather than exploiting
+a traditional software vulnerability.
+
