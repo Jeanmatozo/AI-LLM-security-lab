@@ -93,6 +93,26 @@ When asked to read a non-allowlisted file, the LLM can respond with a refusal wi
 - Fixed in Week 7 by routing file access commands through the tool layer and logging routing decisions.
 
 ---
+## Red Team Analysis
+
+From an adversarial perspective, this system initially exhibited a subtle but
+high-impact weakness: the ability to probe privileged operations without
+triggering enforcement or audit logs.
+
+By issuing file-read commands that the LLM refused in natural language, an
+attacker could:
+- Test access boundaries
+- Infer the existence of protected resources
+- Avoid leaving forensic evidence
+
+This represents a classic “silent failure” pattern, where the system appears
+secure from a user perspective but fails from an audit and detection standpoint.
+
+The introduction of deterministic routing closed this gap by ensuring that all
+privileged intents pass through enforced controls and logging, regardless of
+model behavior.
+
+---
 
 ### Finding 2 — Control Validation: Deterministic Routing Restores Auditability
 **Severity:** Medium (design improvement)
@@ -155,22 +175,20 @@ After deterministic routing was introduced, identical inputs consistently produc
 - Audit logging → Monitoring and event recording
 - Deterministic routing → Secure-by-design enforcement boundary (do not rely on model reasoning)
 
-## Red Team Analysis
+## Business Impact
 
-From an adversarial perspective, this system initially exhibited a subtle but
-high-impact weakness: the ability to probe privileged operations without
-triggering enforcement or audit logs.
+In a production environment, this failure mode could result in:
+- Inability to prove access control enforcement during audits
+- Missed detection of malicious probing or reconnaissance
+- Increased regulatory exposure where audit logs are required
+  (e.g., regulated data access)
 
-By issuing file-read commands that the LLM refused in natural language, an
-attacker could:
-- Test access boundaries
-- Infer the existence of protected resources
-- Avoid leaving forensic evidence
+Because the system relied on model refusals instead of enforced controls,
+security teams would have a false sense of protection while lacking evidence
+of denied access attempts.
 
-This represents a classic “silent failure” pattern, where the system appears
-secure from a user perspective but fails from an audit and detection standpoint.
+Deterministic routing materially improves security posture by making enforcement
+verifiable, reviewable, and defensible.
 
-The introduction of deterministic routing closed this gap by ensuring that all
-privileged intents pass through enforced controls and logging, regardless of
-model behavior.
+
 
