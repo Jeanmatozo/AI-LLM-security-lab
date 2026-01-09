@@ -100,9 +100,10 @@ Enterprise RAG systems ingest PDFs, emails, vendor reports, and internal knowled
 ## 8. Business Impact
 
 This behavior could lead to:
-- Unauthorized disclosure of sensitive internal data
-- Regulatory exposure due to insufficient access controls
-- Audit gaps where enforcement cannot be proven
+- Unauthorized disclosure of sensitive internal information
+- Integrity loss in AI-generated outputs used for decision-making
+- Regulatory exposure due to insufficient input validation
+- Audit gaps where intent and enforcement cannot be demonstrated
 ---
 
 ## 9. Control Mapping (Preview)
@@ -116,17 +117,13 @@ ISO/IEC 27001:
 - A.8.15 — Logging and monitoring
 ---
 
-## Red Team Analysis
+## Red Team Perspective
 
-From an adversarial perspective, this failure mode is attractive because it:
-- Requires no exploit or malware
-- Appears as legitimate system usage
-- Bypasses traditional detection and DLP controls
+This scenario reflects a realistic adversarial approach where the attacker poisons
+stored content rather than interacting maliciously with the system. The attack
+appears as legitimate system usage and bypasses traditional perimeter defenses,
+user awareness, and many detection controls.
 
----
-## Conclusion
-
-This scenario demonstrates that **indirect prompt injection via retrieved documents can fully override RAG system behavior**. Without explicit trust boundary enforcement and document sanitization, RAG architectures remain vulnerable to content poisoning attacks that are difficult to detect and audit.
 
 
 
