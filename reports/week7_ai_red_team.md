@@ -1,4 +1,4 @@
-# AI Red Team Report — Week 7  
+# Week 7 - AI Red Team Report 
 ## Agent Tools, Least Privilege, and Auditability
 
 ## 1. Summary
