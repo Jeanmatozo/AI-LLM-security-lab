@@ -32,6 +32,20 @@ This lab explores realistic attack paths against AI-powered systems, including:
 - Mapping AI risks to **ISO/IEC 27001:2022-style controls**
 
 ---
+### Red Team Perspective
+
+This lab is approached from a red-team mindset: systems are built first, then probed,
+abused, and broken to understand real failure modes before mitigations are applied.
+
+Red team techniques are introduced progressively, aligned with system maturity:
+- Early weeks focus on black-box probing and prompt abuse
+- Middle weeks explore RAG poisoning and tool misuse
+- Later weeks examine silent data exfiltration, guardrail bypasses, and residual risk
+
+The goal is not exploitation for its own sake, but to translate offensive findings into
+defensible controls, audit evidence, and enterprise risk decisions.
+
+---
 
 ## Who I Am
 
