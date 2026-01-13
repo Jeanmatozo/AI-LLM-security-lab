@@ -93,7 +93,7 @@ A basic terminal chatbot was tested for prompt-injection susceptibility. The inj
 
 The following evidence file documents the full terminal transcript used in this assessment:
 
-- `reports/evidence/Report01_prompt_injection_basic_chatbot.md`
+- `reports/evidence/week3_prompt_injection_basic_chatbot.md`
 
 This evidence includes:
 - the baseline interaction,
