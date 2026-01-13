@@ -1,10 +1,5 @@
-# Report 02 — Indirect Prompt Injection Against a RAG System (Scenario 2)
+# Week 6 — Indirect Prompt Injection Against a RAG System (Scenario 2)
 
-**Project:** AI-LLM Security Lab  
-**Week:** 6 — Indirect Prompt Injection  
-**Author:** Jean Akingeneye  
-
----
 
 ## 1. Summary
 
