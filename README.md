@@ -105,7 +105,7 @@ ISO/IEC 27001:2022 Lead Auditor and cybersecurity practitioner transitioning int
 - Enterprise AI systems can be compromised via poisoned PDFs, notes, or emails
 
 **Full analysis:**  
-`reports/week6_indirect_injection_report.md`
+`reports/week6_indirect_prompt_injection_report.md`
 
 ---
 
@@ -201,7 +201,7 @@ indirect_prompt_injection/
 scenario2_rag_attack.md
 
 reports/
-week6_indirect_injection_report.md
+week6_indirect_prompt_injection_report.md
 week7_tool_abuse_exfiltration_report.md
 
 notes/
