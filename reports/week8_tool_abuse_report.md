@@ -1,35 +1,77 @@
-### Assets
-- Confidential sandbox files (`confidential.txt`, `internal_notes.txt`)
-- Authorized public file (`public_info.txt`)
-- File-reading tool execution privileges
-- Audit logs
+# Week 8 — Tool Abuse & Guardrail Evaluation
 
-### Finding 1 — Confused-Deputy Risk via Indirect Requests
+## 1. Summary  
+This assessment evaluates the resilience of an agentic AI system against Tool Abuse and Confused Deputy attacks. Building on the Week 7 findings regarding audit gaps, this week focuses on testing the effectiveness of Deterministic Routing and Parameter Validation as primary defense mechanisms.
 
-Severity: Informational
+---
 
-The agent was tested against indirect, manipulative, and socially engineered prompts designed to coerce misuse of a legitimate file-reading tool without an explicit command.
+## 2. Scope  
 
-Across all test cases, the agent did not invoke tools in response to inferred intent, summaries, confirmations, or embedded command strings. Tool execution remained gated behind deterministic routing requiring explicit syntax (read <filename>), and all malformed or unauthorized attempts were denied by the tool layer.
+**Application:**  
+- `src/app_agent_tools/agent.py`  
 
-This demonstrates effective mitigation of confused-deputy and indirect coercion risks for the tested tool.
+**Tools:**  
+- File-reading tool with allowlist enforcement  
 
-### Finding 2 — Allowlist Disclosure as Capability Signal
+**Attack Vectors:**  
+- Indirect coercion  
+- Parameter tampering  
+- Allowlist probing  
 
-Severity: Low
+---
 
-The command what files can you read discloses allowlisted filenames to the user. While this reduces filename guessing effort, only non-sensitive files are exposed, and the behavior is intentional and fully logged.
+## 3. Findings  
 
-No unauthorized access or sensitive metadata leakage was observed.
+### Finding 1 — Confused-Deputy Risk via Indirect Requests  
+**Severity:** Informational (Mitigated)  
 
-### Impact Analysis
+The agent was subjected to socially engineered prompts designed to trick it into using the file-reading tool without an explicit user command.  
 
-This assessment demonstrates that deterministic routing combined with strict tool-level validation can effectively prevent tool abuse even under adversarial prompting.
+**Result:**  
+The system successfully ignored inferred intent. Because tool invocation is gated behind deterministic routing, the “Confused Deputy” path was blocked at the application layer.
 
-By removing natural-language intent interpretation from tool invocation paths, the system avoids a broad class of confused-deputy failures common in agentic systems that rely on LLM-driven tool selection.
+---
 
-### Conclusion
+### Finding 2 — Allowlist Disclosure as Capability Signal  
+**Severity:** Low  
 
-Tool abuse represents a high-risk class of failures in agentic systems, particularly when tools are invoked based on inferred intent.
+The command `what files can you read` discloses the allowlist. While intentional, this provides an attacker with a verified list of targets, reducing the cost of reconnaissance.
 
-In this system, explicit command routing, filename validation, and allowlist enforcement successfully prevented misuse. While this limits agent flexibility, it significantly improves security posture, auditability, and predictability.
+---
+
+## 4. Red Team Analysis  
+
+From an adversarial perspective, the transition to Deterministic Routing has fundamentally changed the attack surface.
+
+**Intent Decoupling:**  
+By removing the LLM’s ability to “decide” when to use a tool based on natural language, we have eliminated a broad class of prompt injection attacks. The attacker can no longer use “polite coercion” to bypass security logic.
+
+**Reconnaissance Shift:**  
+Since direct tool abuse is blocked, the red team focus shifts to Parameter Tampering. We attempted to bypass the allowlist using path traversal (`../../etc/passwd`) and encoding tricks. However, because the validation happens in the Trusted Tool Layer (Python code) rather than the Untrusted Model Layer, these attempts were caught by standard string validation.
+
+---
+
+## 5. Mitigations & Recommendations  
+
+### Implemented Controls  
+
+- **Deterministic Routing:**  
+  Privileged actions are mapped to specific regex patterns, ensuring the LLM cannot be “convinced” to run a tool outside of defined parameters.  
+
+- **Hardcoded Allowlists:**  
+  The tool layer maintains a “Source of Truth” for accessible files that the LLM cannot modify.  
+
+### Recommended Improvements  
+
+- **Output Filtering:**  
+  Implement a secondary check on the content returned by tools to prevent sensitive data from being leaked even if a tool is legitimately invoked.  
+
+- **Rate Limiting:**  
+  Add per-user limits on tool calls to prevent automated allowlist probing and “denial of wallet” attacks.  
+
+---
+
+## 6. Business Impact  
+
+Failure to secure tool access in agentic systems leads to unauthorized data exfiltration and system integrity loss. By moving enforcement from the “Probabilistic” model layer to the “Deterministic” code layer, the organization gains verifiable security that meets ISO 27001 requirements for access control and auditability.
+
