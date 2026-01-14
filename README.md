@@ -13,12 +13,11 @@ This lab is designed to be reproducible.
 - Python 3.10+
 - OpenAI API key
 
-Install dependencies:
+Clone the repo:
 
 ```bash
 git clone https://github.com/Jeanmatozo/AI-LLM-security-lab.git
 cd AI-LLM-security-lab
-pip install -r requirements.txt
 
 ```
 ## Focus Areas
@@ -48,12 +47,34 @@ AI-LLM-security-lab/
 ├── reports/            # Formal Security Assessments & Findings
 │   ├── week3_prompt_injection_report.md
 │   ├── week6_indirect_prompt_injection_report.md
-│   └── week8_tool_abuse_report.md
-├── Governance/         # Risk Management & Control Mappings
+│   ├── week7_ai_red_team_report.md
+│   ├── week8_tool_abuse_report.md
+│   ├── week9_silent_data_exfiltration_report.md
+│   └── week10_red_team_summary_report.md
+
+
+├── Governance/         # Risk models, control mappings, and governance frameworks
+│                       # (ISO/IEC 27001, OWASP LLM Top 10, NIST AI RMF mappings)
 ├── data/               # Synthetic Datasets & Malicious Documents
 └── logs/               # Audit Trails & Model Behavior Logs
 
 ```
+---
+
+## Governance Folder
+
+The `Governance/` directory contains non-technical artifacts that translate
+attack findings into enterprise language, including:
+
+- ISO/IEC 27001 control mappings  
+- OWASP LLM Top 10 mappings  
+- NIST AI RMF alignment  
+- Risk statements, control gaps, and residual risk assessments  
+
+This separates:
+- **Attacks** (how it breaks)  
+from  
+- **Governance** (how leaders manage the risk)
 ---
 ### Red Team Perspective
 
@@ -70,14 +91,15 @@ The goal is to translate offensive findings into defensible controls, audit evid
 
 ## Lab Roadmap (First 10 Weeks)
 
-1. Week 1-2: Lab setup and baseline chatbot construction.
-2. Week 3: Direct prompt injection experiments.
-3. Week 4-5: RAG application build and baseline hardening.
-4. Week 6: Indirect prompt injection via malicious documents.
-5. Week 7: Agentic systems and tool access implementation.
-6. Week 8: Tool abuse and silent data exfiltration scenarios.
-7. Week 9: Mitigation implementation (Guardrails & Deterministic Routing).
-8. Week 10: Final governance mapping to ISO/IEC 27001:2022.
+
+1. Week 1–2: Lab setup and baseline chatbot construction  
+2. Week 3: Direct prompt injection experiments  
+3. Week 4–5: RAG application build and baseline hardening  
+4. Week 6: Indirect prompt injection via malicious documents  
+5. Week 7: Agentic systems, tool access, least privilege, auditability  
+6. Week 8: Tool abuse and confused-deputy testing  
+7. Week 9: Silent data exfiltration and threat modeling  
+8. Week 10: Final governance mapping to ISO/IEC 27001:2022
 
 ---
 
@@ -139,8 +161,9 @@ They represent one of the **highest-risk and least-understood classes of AI secu
 ---
 
 
-## Who I am 
-ISO/IEC 27001:2022 Lead Auditor and cybersecurity practitioner transitioning into AI & LLM security engineering. I focus on bridging the gap between technical AI exploits and enterprise-grade governance
+## Who I Am
+
+ISO/IEC 27001:2022 Lead Auditor and cybersecurity practitioner transitioning into AI & LLM security engineering. I focus on bridging the gap between technical AI exploits and enterprise-grade governance.
 
 
 ---
