@@ -42,14 +42,48 @@ and formal assessment are distinct artifacts.
 
 ## Current Attack Categories
 
-- **Prompt Injection**
-  - Direct attempts to override system instructions via user input
+### Prompt Injection
+- Direct attempts to override system instructions via user input
+- Examples:
+  - “Ignore previous instructions”
+  - Role or identity redefinition
+  - Output-format manipulation
 
-- **Indirect Prompt Injection**
-  - Malicious instructions embedded in retrieved or stored content (for example: RAG documents)
+### Indirect Prompt Injection
+- Malicious instructions embedded in retrieved or stored content  
+  (for example: RAG documents, notes, PDFs, emails)
+- The user query itself is benign, but retrieved context is adversarial
 
-Future attack categories may include:
-- Tool abuse
+### Tool Abuse
+- Coercing an LLM or agent to misuse legitimate tools in illegitimate ways
+- The tool itself is not broken — the *intent* driving it is manipulated
+
+
+## Future Attack Categories
+
+As the lab evolves, additional categories may include:
+
 - Privilege escalation
-- Confused-deputy scenarios
 - Multi-step agent exploitation
+- Cross-tool chaining attacks
+- Memory and state manipulation
+- Silent data exfiltration channels
+
+These will be added only when the system design supports meaningful testing.
+
+---
+
+## Design Philosophy
+
+This lab follows a progression:
+
+1. Break behavior
+2. Measure risk
+3. Enforce controls
+4. Assess residual exposure
+
+Attack scenarios exist to answer the first question:
+
+> “Where does this system fail under pressure?”
+
+Everything else; risk, controls, governance, is built on top of that truth.
