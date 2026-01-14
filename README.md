@@ -1,6 +1,6 @@
 # AI & LLM Security Lab
 
-A personal, hands-on security lab exploring **real-world risks in AI-powered applications**, with a focus on how Large Language Models (LLMs) fail in practice — not just in theory.
+This is a hands-on security lab exploring **real-world risks in AI-powered applications**, with a focus on how Large Language Models (LLMs) fail in practice — not just in theory.
 
 This repository is designed as a **security engineer’s lab**, emphasizing attack execution, observation, logging, and governance mapping.
 
