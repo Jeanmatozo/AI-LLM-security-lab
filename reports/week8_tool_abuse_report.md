@@ -71,7 +71,35 @@ Since direct tool abuse is blocked, the red team focus shifts to Parameter Tampe
 
 ---
 
-## 6. Business Impact  
+## 6. Business Impact
 
-Failure to secure tool access in agentic systems leads to unauthorized data exfiltration and system integrity loss. By moving enforcement from the “Probabilistic” model layer to the “Deterministic” code layer, the organization gains verifiable security that meets ISO 27001 requirements for access control and auditability.
+Failure to secure tool access in agentic systems leads to:
 
+- Unauthorized data exfiltration  
+- System integrity loss  
+- Undetectable misuse disguised as “legitimate” operations  
+
+By moving enforcement from the **probabilistic model layer** to the **deterministic code layer**, the organization gains:
+
+- Verifiable access control  
+- Forensic auditability  
+- Alignment with ISO/IEC 27001 requirements for access control and monitoring  
+
+This is not just a technical improvement—it is a governance upgrade.
+
+---
+
+## 7. Conclusion
+
+Week 8 demonstrates that:
+
+- Tool abuse is primarily an **intent-control problem**, not a tooling problem  
+- Deterministic routing is a critical security boundary  
+- LLM refusals are not security controls  
+- Governance-grade security requires:
+  - enforcement in code  
+  - logging as evidence  
+  - explicit trust boundaries  
+
+This week establishes the foundation for Week 9:  
+**Silent data exfiltration through legitimate channels.**
