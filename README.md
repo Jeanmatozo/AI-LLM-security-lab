@@ -45,7 +45,10 @@ AI-LLM-security-lab/
 │   ├── indirect_prompt_injection/
 │   └── tool_abuse/
 ├── reports/            # Formal Security Assessments & Findings
+│   ├── week1_2_lab_setup_report.md
 │   ├── week3_prompt_injection_report.md
+│   ├── week4_rag_construction_report.md
+│   ├── week5_rag_baseline_report.md
 │   ├── week6_indirect_prompt_injection_report.md
 │   ├── week7_ai_red_team_report.md
 │   ├── week8_tool_abuse_report.md
