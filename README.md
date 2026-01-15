@@ -45,14 +45,14 @@ AI-LLM-security-lab/
 │   ├── indirect_prompt_injection/
 │   └── tool_abuse/
 ├── reports/            # Formal Security Assessments & Findings
-│   ├── week1_2_lab_setup_report.md
-│   ├── week3_prompt_injection_report.md
-│   ├── week4_rag_construction_report.md
-│   ├── week5_rag_baseline_report.md
-│   ├── week6_indirect_prompt_injection_report.md
-│   ├── week7_ai_red_team_report.md
-│   ├── week8_tool_abuse_report.md
-│   ├── week9_silent_data_exfiltration_report.md
+│   ├── week01_2_lab_setup_report.md
+│   ├── week03_prompt_injection_report.md
+│   ├── week04_rag_construction_report.md
+│   ├── week05_rag_baseline_report.md
+│   ├── week06_indirect_prompt_injection_report.md
+│   ├── week07_ai_red_team_report.md
+│   ├── week08_tool_abuse_report.md
+│   ├── week09_silent_data_exfiltration_report.md
 │   └── week10_red_team_summary_report.md
 
 
@@ -111,17 +111,17 @@ The goal is to translate offensive findings into defensible controls, audit evid
 ## Scenario 1 — Direct Prompt Injection (Basic Chatbot)
 
 - **App:** `src/app_basic_chatbot/chatbot.py`
-- **Analysis** `reports/week3_prompt_injection_report.md`
+- **Analysis** `reports/week03_prompt_injection_report.md`
 - **Focus** `Why system prompts alone are insufficient as a security control`
 
 ## Scenario 2 — Indirect Prompt Injection (RAG Attack)
 - **App** `src/app_rag_docs/rag_app.py`
-- **Analysis** `reports/week6_indirect_prompt_injection_report.md`
+- **Analysis** `reports/week06_indirect_prompt_injection_report.md`
 - **Focus** `Treating retrieved documents as untrusted input`
 
 ## Scenario 3 — Tool Abuse & Silent Exfiltration
 - **App** `src/app_agent_tools/agent.py`
-- **Analysis** `reports/week8_tool_abuse_report.md`
+- **Analysis** `reports/week08_tool_abuse_report.md`
 - **Focus** `Preventing model-initiated tool misuse via deterministic routing`
 
 ---
