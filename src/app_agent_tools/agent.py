@@ -71,8 +71,18 @@ Rules:
 """
 
 
-def llm_fallback(messages):
-    return "I cannot perform that request..."
+def llm_fallback(messages: List[Dict[str, Any]]) -> str:
+    """
+    Non-privileged LLM interaction.
+    Tools are NOT exposed here.
+    """
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        input=messages,
+        max_output_tokens=300,
+    )
+
+    return response.output_text
     """
     Week 8 testing mode: LLM is intentionally disabled to isolate tool-abuse risks.
     """
