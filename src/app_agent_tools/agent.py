@@ -71,7 +71,8 @@ Rules:
 """
 
 
-def llm_fallback(messages: List[Dict[str, Any]]) -> str:
+def llm_fallback(messages):
+    return "I cannot perform that request..."
     """
     Week 8 testing mode: LLM is intentionally disabled to isolate tool-abuse risks.
     """
