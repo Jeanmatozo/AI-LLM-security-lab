@@ -22,7 +22,7 @@ LOG_DIR.mkdir(parents=True, exist_ok=True)
 def log_event(event: str, payload: Dict[str, Any]) -> None:
     from datetime import datetime, timezone
 
-ts = datetime.now(timezone.utc).isoformat()
+    ts = datetime.now(timezone.utc).isoformat()
 
     with LOG_FILE.open("a", encoding="utf-8") as f:
         f.write("---\n")
