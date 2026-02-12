@@ -1,5 +1,5 @@
 # src/app_agent_tools/agent.py
-from __future__ import annotations
+from openai import OpenAI
 
 import datetime
 import re
