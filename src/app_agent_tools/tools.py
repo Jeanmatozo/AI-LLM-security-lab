@@ -10,7 +10,7 @@ from typing import Any, Dict
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SANDBOX_DIR = REPO_ROOT / "data" / "agent_files"
 LOG_DIR = REPO_ROOT / "logs"
-LOG_FILE = LOG_DIR / "week7_agent_log.txt"
+LOG_FILE = LOG_DIR / "week9_agent_log.txt"
 
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 SANDBOX_DIR.mkdir(parents=True, exist_ok=True)
