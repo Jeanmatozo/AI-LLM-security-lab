@@ -1,17 +1,41 @@
 # src/app_rag_docs/rag_app.py
-import datetime
+from __future__ import annotations
+
+import uuid
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import List
+from typing import Any, Dict, List, Tuple
 
 from openai import OpenAI
 
 from .loader import load_and_chunk_all
 from .vectorstore import SimpleVectorStore
 
-# Logging directory for auditability and evidence collection
-LOG_DIR = Path(__file__).resolve().parents[2] / "logs"
+# ----------------------------
+# Logging (local audit trail)
+# ----------------------------
+REPO_ROOT = Path(__file__).resolve().parents[2]
+LOG_DIR = REPO_ROOT / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 LOG_FILE = LOG_DIR / "week5_rag_log.txt"
+
+
+def log_event(event: str, payload: Dict[str, Any]) -> None:
+    """
+    Lightweight structured logging for RAG auditing.
+
+    SECURITY NOTE:
+    - Logs may contain sensitive or malicious content; keep previews short.
+    - Use request_id to correlate all events for a single query.
+    """
+    ts = datetime.now(timezone.utc).isoformat()
+    with LOG_FILE.open("a", encoding="utf-8") as f:
+        f.write("---\n")
+        f.write(f"Time: {ts}\n")
+        f.write(f"Event: {event}\n")
+        for k, v in payload.items():
+            f.write(f"{k}: {v}\n")
+
 
 # Requires OPENAI_API_KEY in the environment
 client = OpenAI()
@@ -20,7 +44,7 @@ EMBED_MODEL = "text-embedding-3-small"
 CHAT_MODEL = "gpt-4o-mini"
 
 
-def get_embedding(text: str) -> List[float]:
+def get_embedding(text: str, request_id: str) -> List[float]:
     """
     Generate an embedding for a piece of text.
 
@@ -28,6 +52,11 @@ def get_embedding(text: str) -> List[float]:
     - Input text may be untrusted (user queries or document content)
     - Embeddings themselves can leak semantic information
     """
+    log_event(
+        "rag_embedding_request",
+        {"request_id": request_id, "input_len": len(text), "input_preview": text[:120]},
+    )
+
     resp = client.embeddings.create(
         model=EMBED_MODEL,
         input=text,
@@ -43,13 +72,22 @@ def build_index() -> SimpleVectorStore:
     - Documents are implicitly trusted at ingestion time
     - This is a critical assumption tested in Week 6 (indirect prompt injection)
     """
+    ingestion_id = str(uuid.uuid4())
+    log_event("rag_ingestion_start", {"request_id": ingestion_id})
+
     print("Loading and chunking documents...")
     chunks = load_and_chunk_all()
     store = SimpleVectorStore()
 
+    log_event(
+        "rag_ingestion_chunks_loaded",
+        {"request_id": ingestion_id, "chunks": len(chunks)},
+    )
+
     print(f"Embedding {len(chunks)} chunks...")
-    for chunk in chunks:
-        emb = get_embedding(chunk["text"])
+    for i, chunk in enumerate(chunks, start=1):
+        # NOTE: Do not log full chunk text; it may be malicious/sensitive.
+        emb = get_embedding(chunk["text"], request_id=ingestion_id)
         store.add(
             emb,
             metadata={
@@ -61,28 +99,27 @@ def build_index() -> SimpleVectorStore:
             },
         )
 
+        # Light progress log every N chunks (keeps logs readable)
+        if i % 25 == 0 or i == len(chunks):
+            log_event(
+                "rag_ingestion_progress",
+                {"request_id": ingestion_id, "embedded_chunks": i},
+            )
+
+    log_event("rag_ingestion_complete", {"request_id": ingestion_id})
     print("Index built.")
     return store
 
 
-def log_result(query: str, context: str, answer: str) -> None:
-    """
-    Log query, retrieved context, and model response for auditing.
-
-    SECURITY NOTE:
-    - Logs are critical for detecting prompt injection and misuse
-    - Stored logs may contain sensitive or malicious content
-    """
-    timestamp = datetime.datetime.now().isoformat()
-    with LOG_FILE.open("a", encoding="utf-8") as f:
-        f.write("---\n")
-        f.write(f"Time: {timestamp}\n")
-        f.write(f"Query: {query}\n\n")
-        f.write("Context Used:\n")
-        f.write(context)
-        f.write("\n\nAnswer:\n")
-        f.write(answer)
-        f.write("\n\n")
+def _format_hits_for_context(top_hits: List[Tuple[float, Dict[str, Any]]]) -> str:
+    context_parts: List[str] = []
+    for score, item in top_hits:
+        meta = item["metadata"]
+        # UNTRUSTED CONTEXT (may include malicious instructions)
+        context_parts.append(
+            f"[{meta['doc_name']} chunk {meta['chunk_index']}] {meta['text']}"
+        )
+    return "\n\n".join(context_parts)
 
 
 def rag_query(store: SimpleVectorStore, query: str) -> str:
@@ -94,29 +131,49 @@ def rag_query(store: SimpleVectorStore, query: str) -> str:
     - Retrieved documents are untrusted context
     - System prompt defines intended safe behavior
     """
+    request_id = str(uuid.uuid4())
+
+    log_event(
+        "rag_user_input",
+        {"request_id": request_id, "user_text": query, "user_len": len(query)},
+    )
+
     # 1) Embed the UNTRUSTED user query
-    query_embedding = get_embedding(query)
+    query_embedding = get_embedding(query, request_id=request_id)
 
     # 2) Retrieve top-k relevant document chunks
-    # TRUST BOUNDARY:
-    # Retrieved chunks may contain malicious or instruction-like content
     top_hits = store.top_k(query_embedding, k=3)
 
-    # 3) Build context from retrieved chunks
-    context_parts = []
+    # Log retrieval metadata (NOT full text)
+    hit_summaries = []
     for score, item in top_hits:
         meta = item["metadata"]
-        context_parts.append(
-            f"[{meta['doc_name']} chunk {meta['chunk_index']}] {meta['text']}"
+        hit_summaries.append(
+            f"{meta.get('doc_name')}#{meta.get('chunk_index')} score={score:.4f}"
         )
 
-    # UNTRUSTED CONTEXT:
-    # This text will be concatenated directly into the prompt
-    context = "\n\n".join(context_parts)
+    log_event(
+        "rag_retrieval",
+        {
+            "request_id": request_id,
+            "k": 3,
+            "hits": len(top_hits),
+            "hit_summaries": "; ".join(hit_summaries),
+        },
+    )
+
+    # 3) Build context from retrieved chunks (UNTRUSTED)
+    context = _format_hits_for_context(top_hits)
+    log_event(
+        "rag_context_built",
+        {
+            "request_id": request_id,
+            "context_len": len(context),
+            "context_preview": context[:200],
+        },
+    )
 
     # 4) Construct user-facing prompt
-    # TRUST BOUNDARY:
-    # Untrusted context is combined with trusted instructions
     user_prompt = f"""Use the context below to answer the user's question.
 If the answer is not in the context, say you are not sure and do not make things up.
 
@@ -126,34 +183,48 @@ Context:
 Question: {query}
 Answer:"""
 
+    log_event(
+        "rag_prompt_built",
+        {
+            "request_id": request_id,
+            "prompt_len": len(user_prompt),
+            "prompt_preview": user_prompt[:200],
+        },
+    )
+
     # 5) LLM call
     response = client.chat.completions.create(
         model=CHAT_MODEL,
         messages=[
             {
-                # TRUSTED SYSTEM MESSAGE
                 "role": "system",
                 "content": "You are a helpful cybersecurity and AI security assistant.",
             },
             {
-                # UNTRUSTED USER MESSAGE (includes retrieved context)
                 "role": "user",
                 "content": user_prompt,
             },
         ],
     )
 
-    # 6) Extract model output
-    # Model output must be treated as untrusted until validated
-    answer_text = response.choices[0].message.content
+    # 6) Extract model output (treat as untrusted until validated)
+    answer_text = response.choices[0].message.content or ""
+    answer_text = answer_text.strip()
 
-    # 7) Log full execution for review and evidence
-    log_result(query, context, answer_text)
+    # 7) Unified response log (evidence anchor)
+    log_event(
+        "rag_response",
+        {
+            "request_id": request_id,
+            "output_len": len(answer_text),
+            "output_preview": answer_text[:200],
+        },
+    )
 
     return answer_text
 
 
-def main():
+def main() -> None:
     """
     CLI entry point.
 
@@ -177,4 +248,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
