@@ -1,5 +1,4 @@
-# Week 10 — AI Red-Team Governance Summary & Control Mapping
-AI-LLM Security Lab
+# Week 10 — AI Red-Team Governance Summary & Control Mappinp
 
 ---
 
