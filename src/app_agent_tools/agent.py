@@ -1,7 +1,7 @@
 # src/app_agent_tools/agent.py
 from __future__ import annotations
 
-import datetime
+import uuid
 from pathlib import Path
 from typing import Any, Dict
 
@@ -71,27 +71,18 @@ def llm_answer(user_query: str) -> str:
         )
         return resp.output_text.strip()
     except Exception as e:
-        # Do not leak stack traces; keep it safe and readable.
         return f"LLM error: {e}"
 
 
 def route_intent(user_query: str) -> str:
     """
     Deterministically map user intent to an allowed action.
-
-    TRUST BOUNDARY:
-    - user_query is untrusted input
-    - routing logic is trusted application code
-
-    Returns a routing key, not a tool name chosen by the LLM.
     """
     q = user_query.lower()
 
-    # Explicit intent checks (no LLM reasoning)
     if "public" in q or "policy" in q:
         return "read_public"
 
-    # Default safe behavior
     return "deny"
 
 
@@ -99,7 +90,6 @@ def route_intent(user_query: str) -> str:
 # Allowlisted tools (privileged boundary)
 # ----------------------------
 def _tool_read_public() -> str:
-    # Reads allowlisted file content; enforcement lives in tools.py
     return read_sandbox_file("public_info.txt")
 
 
@@ -111,33 +101,85 @@ TOOLS = {
 def run_agent(user_query: str) -> str:
     """
     Execute agent logic using deterministic routing.
-
-    SECURITY PROPERTIES:
-    - No tool execution without explicit routing
-    - No dynamic tool selection by the LLM
-    - Least-privilege by design
-    - Audit logging for inputs, routes, and outputs
     """
-    log_event("agent_user_input", {"user_text": user_query})
+    # ✅ STEP 1 — request-scoped identifier (THIS IS THE LINE YOU ASKED ABOUT)
+    request_id = str(uuid.uuid4())
 
+    # Log raw user input
+    log_event(
+        "agent_user_input",
+        {
+            "request_id": request_id,
+            "user_text": user_query,
+        },
+    )
+
+    # Route deterministically
     route = route_intent(user_query)
-    log_event("agent_route", {"route": route, "user_text": user_query})
+    log_event(
+        "agent_route",
+        {
+            "request_id": request_id,
+            "route": route,
+            "user_text": user_query,
+        },
+    )
 
+    # ----------------------------
+    # DENY → LLM (non-privileged)
+    # ----------------------------
     if route == "deny":
         answer = llm_answer(user_query)
-        log_event("agent_llm_response", {"answer_preview": answer[:200]})
+
+        log_event(
+            "agent_response",
+            {
+                "request_id": request_id,
+                "route": "deny",
+                "response_type": "llm_text",
+                "output_len": len(answer),
+                "output_preview": answer[:200],
+            },
+        )
+
         return answer
 
+    # ----------------------------
+    # Defense-in-depth
+    # ----------------------------
     if route not in TOOLS:
-        # Defense-in-depth: even valid routes must be allowlisted
-        log_event("agent_route_not_allowlisted", {"route": route})
-        return "Requested action is not permitted."
+        msg = "Requested action is not permitted."
 
+        log_event(
+            "agent_response",
+            {
+                "request_id": request_id,
+                "route": route,
+                "response_type": "refusal",
+                "output_len": len(msg),
+                "output_preview": msg,
+            },
+        )
+
+        return msg
+
+    # ----------------------------
+    # TOOL PATH (privileged)
+    # ----------------------------
     tool_fn = TOOLS[route]
     output = tool_fn()
 
-    # Important: log only metadata, not full content (to reduce accidental leakage)
-    log_event("agent_tool_output", {"route": route, "output_preview": output[:200]})
+    log_event(
+        "agent_response",
+        {
+            "request_id": request_id,
+            "route": route,
+            "response_type": "tool_output",
+            "output_len": len(output),
+            "output_preview": output[:200],
+        },
+    )
+
     return output
 
 
@@ -155,4 +197,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
