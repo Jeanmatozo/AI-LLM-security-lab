@@ -3,7 +3,7 @@ AI-LLM Security Lab
 
 ---
 
-## 1. Executive Summary
+## 1. Summary
 
 This assessment evaluated whether a deterministically routed, least-privilege AI agent could leak sensitive or internal information through **silent data exfiltration techniques**. These techniques focus on indirect disclosure via structured outputs and convergent prompting rather than explicit access attempts.
 
