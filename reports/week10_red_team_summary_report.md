@@ -28,6 +28,36 @@ Across all tested scenarios, the system demonstrated strong resistance to prompt
 
 This report does **not** include raw attack payloads or prompt transcripts; detailed technical findings are documented in weekly reports.
 
+## 2. Reference Reports & Technical Evidence
+
+This report does not include raw attack payloads or prompt transcripts; detailed technical findings, methodologies, and evidence are documented in the following weekly reports.
+
+These documents provide full technical depth, reproducibility, and audit traceability for all red-team activities referenced in this executive summary.
+
+### Technical Assessment Reports
+
+- **Week 3 — Prompt Injection Assessment**  
+  https://github.com/Jeanmatozo/AI-LLM-security-lab/blob/main/reports/week03_prompt_injection_report.md
+
+- **Week 5 — RAG Baseline & Hardening Assessment**  
+  https://github.com/Jeanmatozo/AI-LLM-security-lab/blob/main/reports/week05_rag_baseline_report.md
+
+- **Week 6 — Indirect Prompt Injection (RAG Poisoning)**  
+  https://github.com/Jeanmatozo/AI-LLM-security-lab/blob/main/reports/week06_indirect_prompt_injection_report.md
+
+- **Week 7 — Agent Design & Initial AI Red-Team Assessment**  
+  https://github.com/Jeanmatozo/AI-LLM-security-lab/blob/main/reports/week07_ai_red_team_report.md
+
+- **Week 8 — Tool Abuse & Confused-Deputy Attacks**  
+  https://github.com/Jeanmatozo/AI-LLM-security-lab/blob/main/reports/week08_tool_abuse_report.md
+
+- **Week 9 — Silent Data Exfiltration Assessment**  
+  https://github.com/Jeanmatozo/AI-LLM-security-lab/blob/main/reports/week09_silent_data_exfiltration_report.md
+
+---
+
+These reports collectively form the technical evidence base supporting the governance conclusions, control mappings, and risk statements presented in this Week 10 executive summary.
+
 ---
 
 ## 3. Key Risk Themes Observed
@@ -62,20 +92,10 @@ The goal is to demonstrate **control coverage**, identify **residual risk**, and
 
 ---
 
+
 ## 5. Control Mapping Table
 
-## Control Mapping — Technical Findings to Governance Frameworks
-
-| Risk Area | Technical Finding | ISO/IEC 27001:2022 | OWASP LLM Top 10 | NIST AI RMF | Control Interpretation |
-|---|---|---|---|---|---|
-| Prompt Injection | Direct instruction override observed in baseline chatbot | A.8.2, A.14 | LLM01: Prompt Injection | MAP, MEASURE | Input validation and enforcement required beyond prompts |
-| Indirect Prompt Injection (RAG) | Malicious document content altered model behavior | A.5.7, A.8.3 | LLM02: Data Poisoning | MAP | Retrieved data must be treated as untrusted input |
-| Agent Tool Abuse | Confused-deputy risk in early agent design | A.8.1, A.8.9 | LLM06: Excessive Agency | MANAGE | Least-privilege and deterministic routing mitigate agent risk |
-| Unauthorized Data Access | Attempts to coerce file access via prompts | A.8.2, A.8.12 | LLM03: Sensitive Data Exposure | MANAGE | Access controls enforced outside the model |
-| Silent Data Exfiltration | Structured output & convergence attacks tested | A.5.12, A.8.10 | LLM04: Data Leakage | MEASURE | No leakage observed; monitoring remains required |
-| Transformation-Based Leakage | Paraphrase and example-based attacks | A.5.10 | LLM05: Insecure Output Handling | MEASURE | Output validation and refusal behavior effective |
-| Logging & Auditability | Request-scoped logging with request_id | A.8.15 | LLM09: Improper Monitoring | GOVERN | Enables forensic analysis and audit readiness |
-| Model Over-Reliance | Risk of assuming refusals = security | A.5.4 | LLM10: Overreliance | GOVERN | Enforcement must live in trusted application code |
+(See Section 2 below for the full table.)
 
 ---
 
@@ -119,3 +139,17 @@ This capstone assessment demonstrates that effective AI security is achieved not
 The AI-LLM Security Lab illustrates how technical red-team testing can be translated into executive-level risk and compliance insight, bridging the gap between engineering and governance.
 
 ---
+
+## Control Mapping — Technical Findings to Governance Frameworks
+
+| Risk Area | Technical Finding | ISO/IEC 27001:2022 | OWASP LLM Top 10 | NIST AI RMF | Control Interpretation |
+|---|---|---|---|---|---|
+| Prompt Injection | Direct instruction override observed in baseline chatbot | A.8.2, A.14 | LLM01: Prompt Injection | MAP, MEASURE | Input validation and enforcement required beyond prompts |
+| Indirect Prompt Injection (RAG) | Malicious document content altered model behavior | A.5.7, A.8.3 | LLM02: Data Poisoning | MAP | Retrieved data must be treated as untrusted input |
+| Agent Tool Abuse | Confused-deputy risk in early agent design | A.8.1, A.8.9 | LLM06: Excessive Agency | MANAGE | Least-privilege and deterministic routing mitigate agent risk |
+| Unauthorized Data Access | Attempts to coerce file access via prompts | A.8.2, A.8.12 | LLM03: Sensitive Data Exposure | MANAGE | Access controls enforced outside the model |
+| Silent Data Exfiltration | Structured output & convergence attacks tested | A.5.12, A.8.10 | LLM04: Data Leakage | MEASURE | No leakage observed; monitoring remains required |
+| Transformation-Based Leakage | Paraphrase and example-based attacks | A.5.10 | LLM05: Insecure Output Handling | MEASURE | Output validation and refusal behavior effective |
+| Logging & Auditability | Request-scoped logging with request_id | A.8.15 | LLM09: Improper Monitoring | GOVERN | Enables forensic analysis and audit readiness |
+| Model Over-Reliance | Risk of assuming refusals = security | A.5.4 | LLM10: Overreliance | GOVERN | Enforcement must live in trusted application code |
+
