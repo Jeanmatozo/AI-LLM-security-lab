@@ -64,7 +64,18 @@ The goal is to demonstrate **control coverage**, identify **residual risk**, and
 
 ## 5. Control Mapping Table
 
-(See Section 2 below for the full table.)
+## Control Mapping — Technical Findings to Governance Frameworks
+
+| Risk Area | Technical Finding | ISO/IEC 27001:2022 | OWASP LLM Top 10 | NIST AI RMF | Control Interpretation |
+|---|---|---|---|---|---|
+| Prompt Injection | Direct instruction override observed in baseline chatbot | A.8.2, A.14 | LLM01: Prompt Injection | MAP, MEASURE | Input validation and enforcement required beyond prompts |
+| Indirect Prompt Injection (RAG) | Malicious document content altered model behavior | A.5.7, A.8.3 | LLM02: Data Poisoning | MAP | Retrieved data must be treated as untrusted input |
+| Agent Tool Abuse | Confused-deputy risk in early agent design | A.8.1, A.8.9 | LLM06: Excessive Agency | MANAGE | Least-privilege and deterministic routing mitigate agent risk |
+| Unauthorized Data Access | Attempts to coerce file access via prompts | A.8.2, A.8.12 | LLM03: Sensitive Data Exposure | MANAGE | Access controls enforced outside the model |
+| Silent Data Exfiltration | Structured output & convergence attacks tested | A.5.12, A.8.10 | LLM04: Data Leakage | MEASURE | No leakage observed; monitoring remains required |
+| Transformation-Based Leakage | Paraphrase and example-based attacks | A.5.10 | LLM05: Insecure Output Handling | MEASURE | Output validation and refusal behavior effective |
+| Logging & Auditability | Request-scoped logging with request_id | A.8.15 | LLM09: Improper Monitoring | GOVERN | Enables forensic analysis and audit readiness |
+| Model Over-Reliance | Risk of assuming refusals = security | A.5.4 | LLM10: Overreliance | GOVERN | Enforcement must live in trusted application code |
 
 ---
 
