@@ -1,5 +1,4 @@
 # Week 9 — Silent Data Exfiltration Assessment
-AI-LLM Security Lab
 
 ---
 
