@@ -23,12 +23,11 @@ cd AI-LLM-security-lab
 ## Focus Areas
 
 This lab explores realistic attack paths against AI-powered systems, including:
-
-- Prompt Injection & Jailbreaks: Direct and indirect manipulation of model behavior.
-- RAG Security: Poisoning retrieval sources to compromise grounded outputs.
-- Agentic Tool Abuse: Exploiting over-privileged tools and autonomous agents.
-- Silent Data Exfiltration: Leaking sensitive data via model, UI, and tool-driven channels.
-- Governance Mapping: Aligning technical risks to OWASP LLM Top 10 and ISO/IEC 27001:2022.
+- **Prompt Injection & Jailbreaks**: Direct and indirect manipulation of model behavior.
+- **RAG Security**: Poisoning retrieval sources to compromise grounded outputs.
+- **Agentic Tool Abuse**: Exploiting over-privileged tools and autonomous agents.
+- **Silent Data Exfiltration**: Leaking sensitive data through model outputs, structured responses, and indirect channels.
+- **Governance Mapping**: Translating technical findings into enterprise risk language using OWASP LLM Top 10, ISO/IEC 27001:2022, and NIST AI RMF.
 
 ---
 
@@ -36,7 +35,7 @@ This lab explores realistic attack paths against AI-powered systems, including:
 The repository is organized to reflect a professional security engineering workflow: Build → Probe → Document → Mitigate.
 ```bash
 AI-LLM-security-lab/
-├── src/                # Vulnerable AI Applications (The "Targets" )
+├── src/                # Vulnerable AI Applications (The "Targets")
 │   ├── app_basic_chatbot/
 │   ├── app_rag_docs/
 │   └── app_agent_tools/
@@ -54,12 +53,9 @@ AI-LLM-security-lab/
 │   ├── week08_tool_abuse_report.md
 │   ├── week09_silent_data_exfiltration_report.md
 │   └── week10_red_team_summary_report.md
-
-
 ├── Governance/         # Risk models, control mappings, and governance frameworks
-│                       # (ISO/IEC 27001, OWASP LLM Top 10, NIST AI RMF mappings)
-├── data/               # Synthetic Datasets & Malicious Documents
-└── logs/               # Audit Trails & Model Behavior Logs
+│                       # (ISO/IEC 27001, OWASP LLM Top 10, NIST AI RMF)
+└── data/               # Synthetic datasets & malicious documents
 
 ```
 ---
