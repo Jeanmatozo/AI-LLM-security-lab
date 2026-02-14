@@ -157,11 +157,19 @@ These attacks often bypass:
 They represent one of the **highest-risk and least-understood classes of AI security failures**.
 
 ---
+## What This Lab Demonstrates
+- How real-world AI systems fail under adversarial pressure
+- Why prompt-based controls are insufficient as security boundaries
+- How RAG systems expand attack surface through untrusted data
+- How deterministic routing and least privilege reduce agent risk
+- How silent data exfiltration can be tested and disproven with evidence
+- How technical findings translate into enterprise governance decisions
 
+---
 
 ## Who I Am
 
-ISO/IEC 27001:2022 Lead Auditor and cybersecurity practitioner transitioning into AI & LLM security engineering. I focus on bridging the gap between technical AI exploits and enterprise-grade governance.
+Cybersecurity practitioner with hands-on experience mapping AI and LLM security risks to enterprise governance frameworks, including ISO/IEC 27001:2022, OWASP LLM Top 10, and NIST AI Risk Management Framework. I focus on bridging technical AI exploit research with audit-ready risk, control, and governance analysis.
 
 
 ---
