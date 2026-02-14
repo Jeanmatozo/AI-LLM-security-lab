@@ -90,14 +90,14 @@ The goal is not to “secure the model,” but to translate offensive findings i
 ## Lab Roadmap (Week1- 9)
 
 
-Week 1–2: Lab setup and baseline chatbot construction  
-Week 3: Direct prompt injection experiments  
-Week 4–5: RAG application build and baseline hardening  
-Week 6: Indirect prompt injection via malicious documents  
-Week 7: Agentic systems, tool access, least privilege, auditability  
-Week 8: Tool abuse and confused-deputy testing  
-Week 9: Silent data exfiltration testing and residual risk analysis 
-Week 10: Executive and governance-level summary (no new attack surface introduced)
+**Week 1–2**: Lab setup and baseline chatbot construction  
+**Week 3**: Direct prompt injection experiments  
+**Week 4–5**: RAG application build and baseline hardening  
+**Week 6**: Indirect prompt injection via malicious documents  
+**Week 7**: Agentic systems, tool access, least privilege, auditability  
+**Week 8**: Tool abuse and confused-deputy testing  
+**Week 9**: Silent data exfiltration testing and residual risk analysis 
+**Week 10**: Executive and governance-level summary (no new attack surface introduced)
 
 ---
 
