@@ -71,34 +71,33 @@ attack findings into enterprise language, including:
 - Risk statements, control gaps, and residual risk assessments  
 
 This separates:
-- **Attacks** (how it breaks)  
-from  
-- **Governance** (how leaders manage the risk)
+- **Attacks** → how systems fail
+- **Governance** → how organizations manage and accept risk
 ---
 ### Red Team Perspective
 
 This lab is approached from a red-team mindset: systems are built first, then probed,
 abused, and broken to understand real failure modes before mitigations are applied.
 
-- Early weeks: Focus on black-box probing and prompt abuse
-- Middle weeks: Explore RAG poisoning and tool misuse
-- Later weeks: Examine silent data exfiltration, guardrail bypasses, and residual risk
+- **Early weeks**: Black-box probing and prompt abuse
+- **Middle weeks**: RAG poisoning and agent tool misuse
+- **Later weeks**: Silent data exfiltration, convergence attacks, and residual risk analysis
 
-The goal is to translate offensive findings into defensible controls, audit evidence, and enterprise risk decisions.
+The goal is not to “secure the model,” but to translate offensive findings into defensible controls, audit evidence, and governance decisions.
 
 ---
 
-## Lab Roadmap (First 10 Weeks)
+## Lab Roadmap (Week1- 9)
 
 
-1. Week 1–2: Lab setup and baseline chatbot construction  
-2. Week 3: Direct prompt injection experiments  
-3. Week 4–5: RAG application build and baseline hardening  
-4. Week 6: Indirect prompt injection via malicious documents  
-5. Week 7: Agentic systems, tool access, least privilege, auditability  
-6. Week 8: Tool abuse and confused-deputy testing  
-7. Week 9: Silent data exfiltration and threat modeling  
-8. Week 10: Final governance mapping to ISO/IEC 27001:2022
+Week 1–2: Lab setup and baseline chatbot construction  
+Week 3: Direct prompt injection experiments  
+Week 4–5: RAG application build and baseline hardening  
+Week 6: Indirect prompt injection via malicious documents  
+Week 7: Agentic systems, tool access, least privilege, auditability  
+Week 8: Tool abuse and confused-deputy testing  
+Week 9: Silent data exfiltration testing and residual risk analysis 
+Week 10: Executive and governance-level summary (no new attack surface introduced)
 
 ---
 
