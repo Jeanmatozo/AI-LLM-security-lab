@@ -131,14 +131,6 @@ Each scenario is evaluated against:
   - Third-party and tool governance
 
 ---
-### OWASP LLM Top 10 Mapping (Primary)
-
-- **LLM01 — Prompt Injection**
-- **LLM02 — Insecure Output Handling**
-- **LLM06 — Sensitive Information Disclosure**
-- **LLM07 — Insecure Plugin / Tool Design**
-
----
 
 ## Silent Data Exfiltration in AI Systems
 
