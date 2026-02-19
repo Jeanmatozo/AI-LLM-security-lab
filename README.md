@@ -4,6 +4,8 @@ This is a hands-on security lab exploring **real-world risks in AI-powered appli
 
 This repository is designed as a **security engineer’s lab**, emphasizing attack execution, observation, logging, and governance mapping.
 
+> **Note:** This repository is a research and experimentation lab.
+
 ---
 ## Setup & Dependencies
 
@@ -20,14 +22,16 @@ git clone https://github.com/Jeanmatozo/AI-LLM-security-lab.git
 cd AI-LLM-security-lab
 
 ```
-## Focus Areas
+## Lab Progression (High-Level)
 
-This lab explores realistic attack paths against AI-powered systems, including:
-- **Prompt Injection & Jailbreaks**: Direct and indirect manipulation of model behavior.
-- **RAG Security**: Poisoning retrieval sources to compromise grounded outputs.
-- **Agentic Tool Abuse**: Exploiting over-privileged tools and autonomous agents.
-- **Silent Data Exfiltration**: Leaking sensitive data through model outputs, structured responses, and indirect channels.
-- **Governance Mapping**: Translating technical findings into enterprise risk language using OWASP LLM Top 10, ISO/IEC 27001:2022, and NIST AI RMF.
+This lab progresses from black-box probing to system-level abuse:
+
+- Baseline LLM probing and prompt injection
+- RAG construction and document-based attacks
+- Agentic tool misuse and privilege boundaries
+- Silent data exfiltration and residual risk analysis
+- Governance and executive-level risk translation
+
 
 ---
 
@@ -90,14 +94,14 @@ The goal is not to “secure the model,” but to translate offensive findings i
 ## Lab Roadmap (Week1- 9)
 
 
-**Week 1–2**: Lab setup and baseline chatbot construction  
-**Week 3**: Direct prompt injection experiments  
-**Week 4–5**: RAG application build and baseline hardening  
-**Week 6**: Indirect prompt injection via malicious documents  
-**Week 7**: Agentic systems, tool access, least privilege, auditability  
-**Week 8**: Tool abuse and confused-deputy testing  
-**Week 9**: Silent data exfiltration testing and residual risk analysis 
-**Week 10**: Executive and governance-level summary (no new attack surface introduced)
+- **Week 1–2**: Lab setup and baseline chatbot construction  
+- **Week 3**: Direct prompt injection experiments  
+- **Week 4–5**: RAG application build and baseline hardening  
+- **Week 6**: Indirect prompt injection via malicious documents  
+- **Week 7**: Agentic systems, tool access, least privilege, auditability  
+- **Week 8**: Tool abuse and confused-deputy testing  
+- **Week 9**: Silent data exfiltration testing and residual risk analysis 
+- **Week 10**: Executive and governance-level summary (no new attack surface introduced)
 
 ---
 
@@ -134,19 +138,9 @@ Each scenario is evaluated against:
 
 ## Silent Data Exfiltration in AI Systems
 
-In this lab, *silent data exfiltration* refers to scenarios where sensitive data is leaked through:
+Silent data exfiltration is treated as a first-class risk in this lab.
+Detailed analysis and examples are documented in the corresponding scenario reports.
 
-- Model-generated outputs
-- Structured responses (JSON, tables, summaries)
-- Agent-initiated tool actions
-- Trusted rendering or execution paths
-
-These attacks often bypass:
-- Traditional DLP controls
-- User awareness
-- UI-based security checks
-
-They represent one of the **highest-risk and least-understood classes of AI security failures**.
 
 ---
 ## What This Lab Demonstrates
@@ -156,13 +150,6 @@ They represent one of the **highest-risk and least-understood classes of AI secu
 - How deterministic routing and least privilege reduce agent risk
 - How silent data exfiltration can be tested and disproven with evidence
 - How technical findings translate into enterprise governance decisions
-
----
-
-## Who I Am
-
-Cybersecurity practitioner with hands-on experience mapping AI and LLM security risks to enterprise governance frameworks, including ISO/IEC 27001:2022, OWASP LLM Top 10, and NIST AI Risk Management Framework. I focus on bridging technical AI exploit research with audit-ready risk, control, and governance analysis.
-
 
 ---
 
