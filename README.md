@@ -91,26 +91,26 @@ The goal is not to “secure the model,” but to translate offensive findings i
 
 ---
 
-# Attack Scenarios in This Lab
+## Attack Scenarios in This Lab
 
-## Scenario 1 — Direct Prompt Injection (Basic Chatbot)
+### Scenario 1 — Direct Prompt Injection (Basic Chatbot)
 
 - **App:** `src/app_basic_chatbot/chatbot.py`
 - **Analysis** `reports/week03_prompt_injection_report.md`
 - **Focus** `Why system prompts alone are insufficient as a security control`
 
-## Scenario 2 — Indirect Prompt Injection (RAG Attack)
+### Scenario 2 — Indirect Prompt Injection (RAG Attack)
 - **App** `src/app_rag_docs/rag_app.py`
 - **Analysis** `reports/week06_indirect_prompt_injection_report.md`
 - **Focus** `Treating retrieved documents as untrusted input`
 
-## Scenario 3 — Tool Abuse & Silent Exfiltration
+### Scenario 3 — Tool Abuse & Silent Exfiltration
 - **App** `src/app_agent_tools/agent.py`
 - **Analysis** `reports/week08_tool_abuse_report.md`
 - **Focus** `Preventing model-initiated tool misuse via deterministic routing`
 
 ---
-## Governance & Control Mapping
+### Governance & Control Mapping
 
 Each scenario is evaluated against:
 - **OWASP LLM Top 10** `(LLM01, LLM02, LLM06, LLM07)`
@@ -122,14 +122,14 @@ Each scenario is evaluated against:
 
 ---
 
-## Silent Data Exfiltration in AI Systems
+### Silent Data Exfiltration in AI Systems
 
 Silent data exfiltration is treated as a first-class risk in this lab.
 Detailed analysis and examples are documented in the corresponding scenario reports.
 
 
 ---
-## What This Lab Demonstrates
+### What This Lab Demonstrates
 - How real-world AI systems fail under adversarial pressure
 - Why prompt-based controls are insufficient as security boundaries
 - How RAG systems expand attack surface through untrusted data
@@ -139,7 +139,7 @@ Detailed analysis and examples are documented in the corresponding scenario repo
 
 ---
 
-## Disclaimer
+### Disclaimer
 
 This repository is for educational and defensive security research only.
 
@@ -152,7 +152,7 @@ AI-powered systems, not to enable misuse.
 
 ---
 
-## Status
+### Status
 
 🚧 Actively evolving — new scenarios, mitigations, and reports added weekly.
 
