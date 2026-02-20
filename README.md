@@ -2,7 +2,7 @@
 
 This is a hands-on security lab exploring **real-world risks in AI-powered applications**, with a focus on how Large Language Models (LLMs) fail in practice — not just in theory.
 
-This repository is designed as a **security engineer’s lab**, emphasizing attack execution, observation, logging, and governance mapping.
+This repository is designed as a **security engineer’s lab**, emphasizing adversarial evaluation, observation, logging, and governance mapping.
 
 > **Note:** This repository is a research and experimentation lab.
 
@@ -43,7 +43,7 @@ AI-LLM-security-lab/
 │   ├── app_basic_chatbot/
 │   ├── app_rag_docs/
 │   └── app_agent_tools/
-├── attacks/            # Technical Walkthroughs & Exploit Payloads
+├── attacks/            # Adversarial Test Cases & Evaluation Artifacts
 │   ├── prompt_injection/
 │   ├── indirect_prompt_injection/
 │   └── tool_abuse/
@@ -80,8 +80,8 @@ This separates:
 ---
 ### Red Team Perspective
 
-This lab is approached from a red-team mindset: systems are built first, then probed,
-abused, and broken to understand real failure modes before mitigations are applied.
+This lab is approached from a red-team mindset: systems are built first, then probed
+under adversarial conditions to understand real failure modes before mitigations are applied.
 
 - **Early weeks**: Black-box probing and prompt abuse
 - **Middle weeks**: RAG poisoning and agent tool misuse
@@ -136,6 +136,25 @@ Detailed analysis and examples are documented in the corresponding scenario repo
 - How deterministic routing and least privilege reduce agent risk
 - How silent data exfiltration can be tested and disproven with evidence
 - How technical findings translate into enterprise governance decisions
+
+---
+
+## Automation and Reproducibility Note
+
+This repository focuses on adversarial evaluation design, observed behavior, and
+failure-mode analysis for AI-powered systems.
+
+While test cases are documented conceptually to emphasize research intent and
+evaluation framing, these scenarios are designed to be compatible with
+automated execution frameworks.
+
+A separate repository (`llm-red-team-toolkit`) demonstrates how similar test
+cases can be executed programmatically, with structured result collection and
+artifact generation (e.g., JSONL outputs and scoring signals).
+
+This separation reflects a deliberate design choice:
+- This lab emphasizes *what* is evaluated and *why*
+- Automation frameworks emphasize *how* evaluations are executed at scale
 
 ---
 
