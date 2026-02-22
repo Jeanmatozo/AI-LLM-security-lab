@@ -1,5 +1,25 @@
 # AI & LLM Security Lab
 
+## Table of Contents
+
+- [Setup & Dependencies](#setup--dependencies)
+- [Requirements](#requirements)
+- [Lab Progression (High-Level)](#lab-progression-high-level)
+- [Code Structure](#code-structure)
+- [Governance Folder](#governance-folder)
+  - [Red Team Perspective](#red-team-perspective)
+- [Attack Scenarios in This Lab](#attack-scenarios-in-this-lab)
+  - [Scenario 1 — Direct Prompt Injection (Basic Chatbot)](#scenario-1--direct-prompt-injection-basic-chatbot)
+  - [Scenario 2 — Indirect Prompt Injection (RAG Attack)](#scenario-2--indirect-prompt-injection-rag-attack)
+  - [Scenario 3 — Tool Abuse & Silent Exfiltration](#scenario-3--tool-abuse--silent-exfiltration)
+- [Governance & Control Mapping](#governance--control-mapping)
+- [Silent Data Exfiltration in AI Systems](#silent-data-exfiltration-in-ai-systems)
+- [What This Lab Demonstrates](#what-this-lab-demonstrates)
+- [Automation and Reproducibility Note](#automation-and-reproducibility-note)
+- [Disclaimer](#disclaimer)
+- [Status](#status)
+
+
 This is a hands-on security lab exploring **real-world risks in AI-powered applications**, with a focus on how Large Language Models (LLMs) fail in practice — not just in theory.
 
 This repository is designed as a **security engineer’s lab**, emphasizing adversarial evaluation, observation, logging, and governance mapping.
