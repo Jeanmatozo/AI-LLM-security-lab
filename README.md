@@ -118,16 +118,22 @@ The goal is not to “secure the model,” but to translate offensive findings i
 - **App:** `src/app_basic_chatbot/chatbot.py`
 - **Analysis** `reports/week03_prompt_injection_report.md`
 - **Focus** `Why system prompts alone are insufficient as a security control`
+  ![Direct Prompt Injection — Observed Behavior](assets/screenshot_01_basic_chatbot_observed_behavior.jpeg)
+  *Observed behavior: single-turn instruction override signal (`INJECTED_SUCCESS`). Behavior does not persist due to stateless design.*
 
 ### Scenario 2 — Indirect Prompt Injection (RAG Attack)
 - **App** `src/app_rag_docs/rag_app.py`
 - **Analysis** `reports/week06_indirect_prompt_injection_report.md`
 - **Focus** `Treating retrieved documents as untrusted input`
+![RAG Context Interference — Observed Behavior](assets/screenshot_02_rag_context_interference.jpeg)
+*Observed behavior: retrieved context introduced instruction-shaped interference, resulting in unexpected output. Evidence captured via retrieval logs.*
 
 ### Scenario 3 — Tool Abuse & Silent Exfiltration
 - **App** `src/app_agent_tools/agent.py`
 - **Analysis** `reports/week08_tool_abuse_report.md`
 - **Focus** `Preventing model-initiated tool misuse via deterministic routing`
+![Agent Tool Boundary Enforcement — Observed Behavior](assets/screenshot_03_agent_boundary_enforcement.jpeg)
+*Observed behavior: deterministic routing denied unauthorized tool invocation and logged the decision for auditability.*
 
 ---
 ### Governance & Control Mapping
