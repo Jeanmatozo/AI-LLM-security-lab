@@ -1,4 +1,6 @@
-# src/app_rag_docs/rag_app.py
+# `src/app_rag_docs/rag_app.py`
+
+```python
 from __future__ import annotations
 
 import uuid
@@ -196,6 +198,21 @@ Answer:"""
     response = client.chat.completions.create(
         model=CHAT_MODEL,
         messages=[
+            # INTENTIONALLY MINIMAL SYSTEM PROMPT
+            # -------------------------------------------------------------
+            # This baseline configuration is intentionally weak.
+            #
+            # The goal in Week 5 is to demonstrate how prompt injection
+            # and malicious instructions inside retrieved documents
+            # can influence the model when no defensive guardrails exist.
+            #
+            # In Week 6 and later labs we introduce hardened prompts,
+            # context sanitization, and trust-boundary enforcement.
+            #
+            # This allows us to compare:
+            #   1. Vulnerable RAG pipeline
+            #   2. Hardened RAG pipeline
+            # -------------------------------------------------------------
             {
                 "role": "system",
                 "content": "You are a helpful cybersecurity and AI security assistant.",
